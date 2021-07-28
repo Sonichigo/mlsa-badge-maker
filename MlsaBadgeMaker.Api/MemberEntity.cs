@@ -1,6 +1,9 @@
-﻿namespace MlsaBadgeMaker.Api.Data.InfluencerApi
+using Microsoft.Azure.Cosmos.Table;
+using MlsaBadgeMaker.Api.Data.InfluencerApi;
+
+namespace MlsaBadgeMaker.Api
 {
-    public class MlsaMember
+    public class MemberEntity : TableEntity
     {
         public int Id { get; set; }
 
