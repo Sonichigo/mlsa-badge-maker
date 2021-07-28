@@ -25,18 +25,15 @@ namespace MlsaBadgeMaker.Api
     {
         [FunctionName("badge")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "badge/{emailAddress}")] HttpRequest req,
+            [FromRoute] string emailAddress,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-
-            string email = req.Query["email"];
-
             using var client = new HttpClient();
 
             var service = new MlsaDirectoryService(client);
             var members = await service.GetAllMembersAsync();
-            var member = members.Single(x => x.StudentPartnerEmail == email);
+            var member = members.Single(x => x.StudentPartnerEmail == emailAddress);
             var pictureStream = await client.GetStreamAsync(member.ProfilePictureUrl);
 
             IAvatarGenerator generator = new ImageSharpAvatarGenerator();
