@@ -16,6 +16,7 @@ namespace MlsaBadgeMaker.Api
         {
             builder.Services.AddHttpClient();
             builder.Services.AddHttpClient<MlsaDirectoryService>();
+            builder.Services.AddSingleton<IIntrospectionService, MsGraphIntrospectionService>();
             builder.Services.AddSingleton<IAvatarGenerator, ImageSharpAvatarGenerator>();
             builder.Services.AddSingleton<ILiteDatabase, LiteDatabase>(_ => new LiteDatabase("data.db"));
             builder.Services.AddSingleton<IMembersRepository, MembersRepository>();
