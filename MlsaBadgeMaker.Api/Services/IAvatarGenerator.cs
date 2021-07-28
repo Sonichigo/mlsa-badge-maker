@@ -19,7 +19,12 @@ namespace MlsaBadgeMaker.Api.Services
         /// <inheritdoc />
         public async Task<Stream> GenerateAsync(Stream imageStream, string milestoneName)
         {
+            // Set up image
             using var image = await Image.LoadAsync(imageStream);
+
+            // Verify
+            if (image.Width != image.Height)
+                throw new Exception("Image has wrong dimensions. The aspect ratio must be 1:1.");
 
             var badgeBuffer = milestoneName switch
             {

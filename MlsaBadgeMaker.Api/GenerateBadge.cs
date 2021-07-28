@@ -9,7 +9,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using MlsaBadgeMaker.Api.Data.InfluencerApi;
 using MlsaBadgeMaker.Api.Properties;
 using MlsaBadgeMaker.Api.Services;
 using Newtonsoft.Json;
@@ -21,9 +20,9 @@ using SixLabors.ImageSharp.Processing;
 
 namespace MlsaBadgeMaker.Api
 {
-    public static class GenerateBadge
+    public static class GenerateBadgeFromProfile
     {
-        [FunctionName("badge")]
+        [FunctionName(nameof(GenerateBadgeFromProfile))]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "badge/{emailAddress}")] HttpRequest req,
             [FromRoute] string emailAddress,
