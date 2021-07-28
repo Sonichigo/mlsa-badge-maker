@@ -10,17 +10,34 @@ namespace MlsaBadgeMaker.Api.Services
 {
     public class MlsaDirectoryService
     {
-        private const string SearchEndpoint = "https://mavenapi-prod.azurewebsites.net/api/UserProfiles/search";
+        private readonly HttpClient _client;
+
+        public const string UserProfilesEndpoint = "https://mavenapi-prod.azurewebsites.net/api/UserProfiles";
+        public const string SearchEndpoint = UserProfilesEndpoint + "/search";
+
+        public MlsaDirectoryService(HttpClient httpClient)
+        {
+            _client = httpClient;
+        }
 
         public async Task<IEnumerable<MlsaMember>> GetAllMembersAsync()
         {
-            using var client = new HttpClient();
-            var result = await client.GetAsync(SearchEndpoint);
+            var result = await _client.GetAsync(SearchEndpoint);
 
             result.EnsureSuccessStatusCode();
             var response = await result.Content.ReadAsAsync<SearchResponse>();
 
             return response.UserProfiles;
+        }
+
+        public async Task<MlsaMember> GetMemberAsync(string emailAddress)
+        {
+            var result = await _client.GetAsync($"{UserProfilesEndpoint}/{emailAddress}");
+
+            result.EnsureSuccessStatusCode();
+            var response = await result.Content.ReadAsAsync<UserProfileResponse>();
+
+            return response.UserProfile;
         }
     }
 }

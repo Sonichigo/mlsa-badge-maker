@@ -6,4 +6,9 @@ namespace MlsaBadgeMaker.Api.Data.InfluencerApi
     {
         public IEnumerable<MlsaMember> UserProfiles { get; set; }
     }
+
+    public class UserProfileResponse
+    {
+        public MlsaMember UserProfile { get; set; }
+    }
 }

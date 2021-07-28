@@ -1,18 +1,24 @@
 using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
+using MlsaBadgeMaker.Api.Data.InfluencerApi;
 using MlsaBadgeMaker.Api.Services;
+using Moq;
 using Xunit;
 
 namespace MlsaBadgeMaker.Tests
 {
-    public class MlsaDirectoryServiceTests
+    public class MlsaDirectoryServiceIntegrationTests
     {
         [Fact]
         public async Task MlsaDirectoryService_GetAllMembers_Successfully()
         {
             // Arrange
-            var service = new MlsaDirectoryService();
+            var service = new MlsaDirectoryService(new HttpClient());
 
             // Act
             var members = (await service.GetAllMembersAsync()).ToList();
