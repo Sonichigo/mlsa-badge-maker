@@ -10,9 +10,9 @@ using Newtonsoft.Json;
 
 namespace MlsaBadgeMaker.Api
 {
-    public static class Function1
+    public static class GenerateBadge
     {
-        [FunctionName("Function1")]
+        [FunctionName("badge")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
