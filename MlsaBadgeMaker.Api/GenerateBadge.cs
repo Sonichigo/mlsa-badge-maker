@@ -9,6 +9,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using MlsaBadgeMaker.Api.Data.InfluencerApi;
 using MlsaBadgeMaker.Api.Properties;
 using MlsaBadgeMaker.Api.Services;
 using Newtonsoft.Json;
@@ -35,32 +36,11 @@ namespace MlsaBadgeMaker.Api
 
             var service = new MlsaDirectoryService(client);
             var members = await service.GetAllMembersAsync();
-            
             var member = members.Single(x => x.StudentPartnerEmail == email);
+            var pictureStream = await client.GetStreamAsync(member.ProfilePictureUrl);
 
-
-            var picture = await client.GetStreamAsync(member.ProfilePictureUrl);
-
-            using var image = await Image.LoadAsync(picture);
-
-            var badgeBuffer = member.LevelStatus.LevelName switch
-            {
-                "New" => Resources.MSLearn_SA_Profile_Badge_Overlay_GENERIC,
-                "Alpha" => Resources.MSLearn_SA_Profile_Badge_Overlay_ALPHA,
-                "Beta" => Resources.MSLearn_SA_Profile_Badge_Overlay_BETA,
-                "Gold" => Resources.MSLearn_SA_Profile_Badge_Overlay_GOLD,
-                _ => throw new ArgumentOutOfRangeException()
-            };
-
-            using var badgeImage = await Image.LoadAsync(new MemoryStream(badgeBuffer));
-            badgeImage.Mutate(x => x.Resize(image.Size()));
-
-            image.Mutate(x => x.DrawImage(badgeImage, new Point(0), 1));
-
-            var outputStream = new MemoryStream();
-            await image.SaveAsync(outputStream, PngFormat.Instance);
-
-            outputStream.Position = 0;
+            IAvatarGenerator generator = new ImageSharpAvatarGenerator();
+            var outputStream = await generator.GenerateAsync(pictureStream, member.LevelStatus.LevelName);
 
             return new FileStreamResult(outputStream, "image/png");
         }
