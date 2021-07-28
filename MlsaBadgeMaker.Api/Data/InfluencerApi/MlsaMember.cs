@@ -1,7 +1,10 @@
-﻿namespace MlsaBadgeMaker.Api.Data.InfluencerApi
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MlsaBadgeMaker.Api.Data.InfluencerApi
 {
     public class MlsaMember
     {
+        [Key]
         public int Id { get; set; }
 
         public string FirstName { get; set; }

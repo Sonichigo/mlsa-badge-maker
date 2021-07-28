@@ -10,6 +10,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using MlsaBadgeMaker.Api.Properties;
+using MlsaBadgeMaker.Api.Repositories;
 using MlsaBadgeMaker.Api.Services;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp;
@@ -20,20 +21,25 @@ using SixLabors.ImageSharp.Processing;
 
 namespace MlsaBadgeMaker.Api
 {
-    public static class GenerateBadgeFromProfile
+    public class GenerateBadgeFromProfile
     {
+        private readonly IMembersRepository _membersRepository;
+        private readonly HttpClient _client;
+
+        public GenerateBadgeFromProfile(IMembersRepository membersRepository, IHttpClientFactory httpClientFactory)
+        {
+            _membersRepository = membersRepository;
+            _client = httpClientFactory.CreateClient();
+        }
+
         [FunctionName(nameof(GenerateBadgeFromProfile))]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "badge/{emailAddress}")] HttpRequest req,
             [FromRoute] string emailAddress,
             ILogger log)
         {
-            using var client = new HttpClient();
-
-            var service = new MlsaDirectoryService(client);
-            var members = await service.GetAllMembersAsync();
-            var member = members.Single(x => x.StudentPartnerEmail == emailAddress);
-            var pictureStream = await client.GetStreamAsync(member.ProfilePictureUrl);
+            var member = await _membersRepository.FindAsync(emailAddress);
+            var pictureStream = await _client.GetStreamAsync(member.ProfilePictureUrl);
 
             IAvatarGenerator generator = new ImageSharpAvatarGenerator();
             var outputStream = await generator.GenerateAsync(pictureStream, member.LevelStatus.LevelName);

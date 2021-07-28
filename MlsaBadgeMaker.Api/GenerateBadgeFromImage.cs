@@ -11,7 +11,7 @@ namespace MlsaBadgeMaker.Api
 {
     public static class GenerateBadgeFromImage
     {
-        [FunctionName(nameof(GenerateBadgeFromProfile))]
+        [FunctionName(nameof(GenerateBadgeFromImage))]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "badge")] HttpRequest req,
             ILogger log)

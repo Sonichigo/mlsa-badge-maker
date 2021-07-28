@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LiteDB;
@@ -7,7 +8,7 @@ using MlsaBadgeMaker.Api.Data.InfluencerApi;
 
 namespace MlsaBadgeMaker.Api.Repositories
 {
-    public class MembersRepository
+    public class MembersRepository : IMembersRepository
     {
         private readonly ILiteDatabase _database;
 
@@ -22,9 +23,20 @@ namespace MlsaBadgeMaker.Api.Repositories
             return Task.FromResult(member);
         }
 
-        public Task AddAsync(MlsaMember member)
+        public Task AddOrUpdateAsync(MlsaMember member)
         {
-            Collection.Insert(member);
+            if (Collection.Exists(x => x.Id == member.Id))
+                Collection.Update(member);
+            else
+                Collection.Insert(member);
+
+            return Task.CompletedTask;
+        }
+
+        /// <inheritdoc />
+        public Task AddOrUpdateRangeAsync(IEnumerable<MlsaMember> members)
+        {
+            members.ToList().ForEach(x => AddOrUpdateAsync(x));
             return Task.CompletedTask;
         }
 
