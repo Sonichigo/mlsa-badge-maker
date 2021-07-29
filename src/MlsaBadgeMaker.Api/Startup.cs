@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using LiteDB;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +19,8 @@ namespace MlsaBadgeMaker.Api
             builder.Services.AddHttpClient<MlsaDirectoryService>();
             builder.Services.AddSingleton<IIntrospectionService, MsGraphIntrospectionService>();
             builder.Services.AddSingleton<IAvatarGenerator, ImageSharpAvatarGenerator>();
-            builder.Services.AddSingleton<ILiteDatabase, LiteDatabase>(_ => new LiteDatabase("data.db"));
+            builder.Services.AddSingleton<ILiteDatabase, LiteDatabase>(_ => 
+                new LiteDatabase(Path.Combine(builder.GetContext().ApplicationRootPath, "data.db")));
             builder.Services.AddSingleton<IMembersRepository, MembersRepository>();
         }
     }
