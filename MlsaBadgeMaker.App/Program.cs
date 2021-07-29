@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using MlsaBadgeMaker.App.Services;
 
 namespace MlsaBadgeMaker.App
 {
@@ -17,7 +18,10 @@ namespace MlsaBadgeMaker.App
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            // builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped<BadgeMakerClient>();
+
+            builder.Services.AddSingleton<HttpClient>();
 
             builder.Services.AddMsalAuthentication(options =>
             {
