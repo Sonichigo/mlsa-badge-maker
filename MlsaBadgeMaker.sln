@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MlsaBadgeMaker.App", "MlsaBadgeMaker.App\MlsaBadgeMaker.App.csproj", "{3FD0FF16-F618-4998-8830-02BBC617ED9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MlsaBadgeMaker.Api", "src\MlsaBadgeMaker.Api\MlsaBadgeMaker.Api.csproj", "{857D8151-375B-4D45-AC9F-7578415F412E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MlsaBadgeMaker.Api", "MlsaBadgeMaker.Api\MlsaBadgeMaker.Api.csproj", "{857D8151-375B-4D45-AC9F-7578415F412E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MlsaBadgeMaker.App", "src\MlsaBadgeMaker.App\MlsaBadgeMaker.App.csproj", "{3FD0FF16-F618-4998-8830-02BBC617ED9C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MlsaBadgeMaker.Tests", "tests\MlsaBadgeMaker.Tests\MlsaBadgeMaker.Tests.csproj", "{51172061-7FE7-4725-9D69-41FE48FC3890}"
 EndProject

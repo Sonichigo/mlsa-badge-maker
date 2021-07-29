@@ -362,7 +362,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-/MlsaBadgeMaker.Api/Resources/Badges/MSLearn_SA_Profile_Badge_Overlay_GOLD.png
-/MlsaBadgeMaker.Api/Resources/Badges/MSLearn_SA_Profile_Badge_Overlay_GENERIC.png
-/MlsaBadgeMaker.Api/Resources/Badges/MSLearn_SA_Profile_Badge_Overlay_BETA.png
-/MlsaBadgeMaker.Api/Resources/Badges/MSLearn_SA_Profile_Badge_Overlay_ALPHA.png
+MSLearn_SA_Profile_Badge_Overlay_GOLD.png
+MSLearn_SA_Profile_Badge_Overlay_GENERIC.png
+MSLearn_SA_Profile_Badge_Overlay_BETA.png
+MSLearn_SA_Profile_Badge_Overlay_ALPHA.png
