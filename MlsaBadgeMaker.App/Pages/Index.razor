@@ -2,3 +2,25 @@
 @attribute [Authorize]
 @inject BadgeMakerClient _badgeMakerClient
 
+
+<InputFile OnChange="@HandleSelected" />
+
+<img src="@Base64Image" alt="Profile picture with badge" />
+
+@code {
+
+    public string Base64Image { get; set; }
+
+    private async Task HandleSelected(InputFileChangeEventArgs args)
+    {
+        await using var imageStream = args.File.OpenReadStream();
+        await using var resultStream = await _badgeMakerClient.CreateBadgeAsync(args.File);
+        
+        resultStream.Seek(0, SeekOrigin.Begin);
+        await using var memoryStream = new MemoryStream();
+        await resultStream.CopyToAsync(memoryStream);
+
+        Base64Image = $"data:image/png;base64,{Convert.ToBase64String(memoryStream.ToArray())}";
+    }
+
+}

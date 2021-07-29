@@ -1,6 +1,7 @@
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Extensions.Configuration;
 
@@ -19,16 +20,18 @@ namespace MlsaBadgeMaker.App.Services
             _configuration = configuration;
         }
 
-        public async Task<Stream> CreateBadgeAsync(Stream imageStream)
+        public async Task<Stream> CreateBadgeAsync(IBrowserFile file)
         {
+            var imageStream = file.OpenReadStream();
+
             var token = await _tokenProvider.RequestAccessToken();
             token.TryGetToken(out var accessToken);
             var jwt = accessToken.Value;
 
-            var response = await _client.PostAsync($"{_configuration["apiEndpoint"]}/api/badge", new MultipartFormDataContent
+            var response = await _client.PostAsync($"{_configuration["ApiEndpoint"]}/api/badge", new MultipartFormDataContent
             {
                 { new StringContent(jwt), "token" },
-                { new StreamContent(imageStream), "file" }
+                { new StreamContent(imageStream), "image", file.Name }
             });
 
             response.EnsureSuccessStatusCode();
