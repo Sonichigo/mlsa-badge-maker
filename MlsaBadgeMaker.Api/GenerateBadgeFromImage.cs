@@ -5,6 +5,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using MlsaBadgeMaker.Api.Data.InfluencerApi;
+using MlsaBadgeMaker.Api.Repositories;
 using MlsaBadgeMaker.Api.Services;
 
 namespace MlsaBadgeMaker.Api
@@ -13,11 +14,15 @@ namespace MlsaBadgeMaker.Api
     public class GenerateBadgeFromImage
     {
         private readonly IIntrospectionService _introspectionService;
+        private readonly IMembersRepository _membersRepository;
         private readonly IAvatarGenerator _generator;
 
-        public GenerateBadgeFromImage(IIntrospectionService introspectionService, IAvatarGenerator generator)
+        public GenerateBadgeFromImage(IIntrospectionService introspectionService,
+            IMembersRepository membersRepository,
+            IAvatarGenerator generator)
         {
             _introspectionService = introspectionService;
+            _membersRepository = membersRepository;
             _generator = generator;
         }
 
@@ -31,12 +36,16 @@ namespace MlsaBadgeMaker.Api
             if (!await _introspectionService.IsValidAsync(token))
                 return new UnauthorizedResult();
 
+            // Get user
+            var username = await _introspectionService.GetPrincipalNameAsync(token);
+            var member = await _membersRepository.FindAsync(username);
+
             // Get image
             var imageFormFile = req.Form.Files.GetFile("image");
             var pictureStream = imageFormFile.OpenReadStream();
 
             // Generate
-            var outputStream = await _generator.GenerateAsync(pictureStream, MlsaLevel.New);
+            var outputStream = await _generator.GenerateAsync(pictureStream, member.LevelStatus.LevelName);
 
             return new FileStreamResult(outputStream, "image/png");
         }
