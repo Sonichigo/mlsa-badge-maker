@@ -119,15 +119,15 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="MSLearn_SA_Profile_Badge_Overlay_ALPHA" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\badges\mslearn_sa_profile_badge_overlay_alpha.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\Badges\MSLearn_SA_Profile_Badge_Overlay_ALPHA.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="MSLearn_SA_Profile_Badge_Overlay_BETA" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\badges\mslearn_sa_profile_badge_overlay_beta.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\Badges\MSLearn_SA_Profile_Badge_Overlay_BETA.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="MSLearn_SA_Profile_Badge_Overlay_GENERIC" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\badges\mslearn_sa_profile_badge_overlay_generic.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\Badges\MSLearn_SA_Profile_Badge_Overlay_GENERIC.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="MSLearn_SA_Profile_Badge_Overlay_GOLD" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\badges\mslearn_sa_profile_badge_overlay_gold.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\Badges\MSLearn_SA_Profile_Badge_Overlay_GOLD.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
