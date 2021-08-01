@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +7,11 @@ using MlsaBadgeMaker.Api.Data.InfluencerApi;
 
 namespace MlsaBadgeMaker.Api.Repositories
 {
-    public class MembersRepository : IMembersRepository
+    public class LiteDbMembersRepository : IMembersRepository
     {
         private readonly ILiteDatabase _database;
 
-        public MembersRepository(ILiteDatabase database)
+        public LiteDbMembersRepository(ILiteDatabase database)
         {
             _database = database;
         }

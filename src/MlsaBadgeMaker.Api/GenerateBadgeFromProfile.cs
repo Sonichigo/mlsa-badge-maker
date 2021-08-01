@@ -39,6 +39,9 @@ namespace MlsaBadgeMaker.Api
             ILogger log)
         {
             var member = await _membersRepository.FindAsync(emailAddress);
+            if (member is null)
+                return new NotFoundResult();
+
             var pictureStream = await _client.GetStreamAsync(member.ProfilePictureUrl);
 
             IAvatarGenerator generator = new ImageSharpAvatarGenerator();

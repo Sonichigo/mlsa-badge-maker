@@ -1,7 +1,9 @@
 using System;
 using System.IO;
 using LiteDB;
+using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MlsaBadgeMaker.Api;
 using MlsaBadgeMaker.Api.Repositories;
@@ -19,9 +21,21 @@ namespace MlsaBadgeMaker.Api
             builder.Services.AddHttpClient<MlsaDirectoryService>();
             builder.Services.AddSingleton<IIntrospectionService, MsGraphIntrospectionService>();
             builder.Services.AddSingleton<IAvatarGenerator, ImageSharpAvatarGenerator>();
-            builder.Services.AddSingleton<ILiteDatabase, LiteDatabase>(_ => 
-                new LiteDatabase(Path.Combine(builder.GetContext().ApplicationRootPath, "data.db")));
-            builder.Services.AddSingleton<IMembersRepository, MembersRepository>();
+
+            //builder.Services.AddSingleton<ILiteDatabase, LiteDatabase>(_ => 
+            //    new LiteDatabase(Path.Combine(builder.GetContext().ApplicationRootPath, "data.db")));
+            //builder.Services.AddSingleton<IMembersRepository, LiteDbMembersRepository>();
+
+            builder.Services.AddSingleton<CloudTableClient>(x =>
+            {
+                var storageAccount =
+                    CloudStorageAccount.Parse(builder.GetContext().Configuration
+                        .GetConnectionStringOrSetting("TableConnection"));
+
+                return storageAccount.CreateCloudTableClient();
+            });
+
+            builder.Services.AddSingleton<IMembersRepository, TableMembersRepository>();
         }
     }
 }

@@ -26,14 +26,27 @@ namespace MlsaBadgeMaker.Api
         }
 
         [FunctionName("SyncMembers")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "sync/members")] HttpRequest req,
-            /* [TimerTrigger("0 0 0 * * *", RunOnStartup = true)] TimerInfo myTimer, */
+#if RELEASE
+        public async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "sync/members")] HttpRequest req,
+#else
+        public async Task Run(
+            [TimerTrigger("0 0 0 * * *", RunOnStartup = true)] TimerInfo myTimer,
+#endif
             ILogger log)
         {
-            var members = await _directoryService.GetAllMembersAsync();
+            log.LogInformation("Fetching members...");
 
-            await _membersRepository.AddOrUpdateRangeAsync(members);
+            var members = await _directoryService.GetAllMembersAsync();
+            var mlsaMembers = members.ToList();
+            log.LogInformation("Fetched {0} members from API", mlsaMembers.Count);
+
+            await _membersRepository.AddOrUpdateRangeAsync(mlsaMembers);
+            log.LogInformation("Synced all {0} members", mlsaMembers.Count);
+
+#if RELEASE
             return new OkResult();
+#endif
         }
     }
 }
