@@ -13,24 +13,36 @@ namespace MlsaBadgeMaker.Api
     public class GenerateBadgeFromProfile
     {
         private readonly IMembersRepository _membersRepository;
+        private readonly IIntrospectionService _introspectionService;
         private readonly HttpClient _client;
 
-        public GenerateBadgeFromProfile(IMembersRepository membersRepository, IHttpClientFactory httpClientFactory)
+        public GenerateBadgeFromProfile(IMembersRepository membersRepository,
+            IIntrospectionService introspectionService,
+            IHttpClientFactory httpClientFactory)
         {
             _membersRepository = membersRepository;
+            _introspectionService = introspectionService;
             _client = httpClientFactory.CreateClient();
         }
 
         [FunctionName(nameof(GenerateBadgeFromProfile))]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "badge/{emailAddress}")] HttpRequest req,
-            [FromRoute] string emailAddress,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "badge")] HttpRequest req,
             ILogger log)
         {
-            var member = await _membersRepository.FindAsync(emailAddress);
+            // Validate token
+            if (!req.Headers.TryGetValue("token", out var token))
+                return new UnauthorizedResult();
+            if (!await _introspectionService.IsValidAsync(token))
+                return new UnauthorizedResult();
+
+            // Get user 
+            var name = await _introspectionService.GetPrincipalNameAsync(token);
+            var member = await _membersRepository.FindAsync(name);
             if (member is null)
                 return new NotFoundResult();
 
+            // Generate
             var pictureStream = await _client.GetStreamAsync(member.ProfilePictureUrl);
 
             IAvatarGenerator generator = new ImageSharpAvatarGenerator();

@@ -31,7 +31,8 @@ namespace MlsaBadgeMaker.Api
             ILogger log)
         {
             // Validate token
-            var token = req.Form["token"];
+            if (!req.Form.TryGetValue("token", out var token))
+                return new UnauthorizedResult();
             if (!await _introspectionService.IsValidAsync(token))
                 return new UnauthorizedResult();
 

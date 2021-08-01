@@ -14,16 +14,28 @@
 
     public string Base64Image { get; set; }
 
+    /// <inheritdoc />
+    protected override async Task OnInitializedAsync()
+    {
+        await using var resultStream = await _badgeMakerClient.CreateBadgeAsync();
+        Base64Image = await ConvertImageToBase64(resultStream);
+    }
+
     private async Task HandleSelected(InputFileChangeEventArgs args)
     {
         await using var imageStream = args.File.OpenReadStream();
         await using var resultStream = await _badgeMakerClient.CreateBadgeAsync(args.File);
-        
-        resultStream.Seek(0, SeekOrigin.Begin);
-        await using var memoryStream = new MemoryStream();
-        await resultStream.CopyToAsync(memoryStream);
+        Base64Image = await ConvertImageToBase64(resultStream);
+    }
 
-        Base64Image = $"data:image/png;base64,{Convert.ToBase64String(memoryStream.ToArray())}";
+    private async Task<string> ConvertImageToBase64(Stream stream)
+    {
+        
+        stream.Seek(0, SeekOrigin.Begin);
+        await using var memoryStream = new MemoryStream();
+        await stream.CopyToAsync(memoryStream);
+
+        return $"data:image/png;base64,{Convert.ToBase64String(memoryStream.ToArray())}";
     }
 
 }
