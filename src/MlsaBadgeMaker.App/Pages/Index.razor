@@ -3,12 +3,25 @@
 @inject BadgeMakerClient _badgeMakerClient
 
 
-<InputFile OnChange="@HandleSelected" />
+<div class="row align-items-center">
+    <div class="col-6">
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <img src="@Base64Image" class="rounded-circle" alt="Profile picture with badge"/>
+        </div>
 
-<img src="@Base64Image" alt="Profile picture with badge" />
+        <div class="mt-3">
+            <label for="customImageFile" class="form-label">Use a custom image</label>
+            <InputFile OnChange="@HandleSelected" class="form-control" id="customImageFile"/>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <a class="btn btn-primary" href="@Base64Image" download="mlsa_avatar.png">Download Profile Picture</a>
+            <button class="btn btn-primary">Apply to Microsoft Teams</button>
+        </div>
+    </div>
+</div>
 
-<a class="btn btn-primary" href="@Base64Image" download="mlsa_avatar.png">Download Profile Picture</a>
-<button class="btn btn-primary">Apply to Microsoft Teams</button>
 
 @code {
 
