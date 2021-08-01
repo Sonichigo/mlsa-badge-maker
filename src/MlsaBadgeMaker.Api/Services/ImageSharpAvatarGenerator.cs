@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using MlsaBadgeMaker.Api.Data.InfluencerApi;
+﻿using MlsaBadgeMaker.Api.Data.InfluencerApi;
 using MlsaBadgeMaker.Api.Properties;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace MlsaBadgeMaker.Api.Services
 {

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using MlsaBadgeMaker.Api.Data.InfluencerApi;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using MlsaBadgeMaker.Api.Data.InfluencerApi;
 
 namespace MlsaBadgeMaker.Api.Repositories
 {

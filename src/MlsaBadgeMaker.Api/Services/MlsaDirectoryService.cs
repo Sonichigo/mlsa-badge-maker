@@ -1,9 +1,7 @@
-﻿using System.Collections;
+﻿using MlsaBadgeMaker.Api.Data.InfluencerApi;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using MlsaBadgeMaker.Api.Data.InfluencerApi;
 
 namespace MlsaBadgeMaker.Api.Services
 {

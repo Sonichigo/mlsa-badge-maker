@@ -1,13 +1,6 @@
-using System;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
-using MlsaBadgeMaker.Api.Data.InfluencerApi;
-using MlsaBadgeMaker.Api.Services;
-using Moq;
 using Xunit;
 
 namespace MlsaBadgeMaker.Tests

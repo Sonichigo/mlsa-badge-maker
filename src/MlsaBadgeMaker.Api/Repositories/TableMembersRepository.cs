@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Microsoft.Azure.Cosmos.Table;
+using MlsaBadgeMaker.Api.Data.InfluencerApi;
+using MlsaBadgeMaker.Api.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Azure.Cosmos.Table;
-using MlsaBadgeMaker.Api.Data.InfluencerApi;
-using MlsaBadgeMaker.Api.Models;
 
 namespace MlsaBadgeMaker.Api.Repositories
 {

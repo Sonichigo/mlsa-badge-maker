@@ -1,9 +1,9 @@
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Extensions.Configuration;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace MlsaBadgeMaker.App.Services
 {

@@ -1,23 +1,12 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Mime;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using MlsaBadgeMaker.Api.Properties;
 using MlsaBadgeMaker.Api.Repositories;
 using MlsaBadgeMaker.Api.Services;
-using Newtonsoft.Json;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Jpeg;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace MlsaBadgeMaker.Api
 {

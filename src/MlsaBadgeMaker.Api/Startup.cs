@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using LiteDB;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
