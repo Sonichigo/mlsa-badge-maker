@@ -4,6 +4,11 @@ using MlsaBadgeMaker.Api.Repositories;
 using MlsaBadgeMaker.Api.Services;
 using System.Linq;
 using System.Threading.Tasks;
+#if RELEASE
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+#endif
 
 namespace MlsaBadgeMaker.Api
 {
