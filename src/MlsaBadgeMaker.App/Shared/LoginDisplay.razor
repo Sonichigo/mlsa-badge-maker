@@ -1,5 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Text.Json.Serialization
+@using System.Text.Json
+@using System.Collections.Immutable
+@using System.Collections.ObjectModel
+@using MlsaBadgeMaker.App.Properties
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
@@ -7,7 +12,7 @@
 <AuthorizeView>
     <Authorized>
         <span class="navbar-text">
-            @context.User.Identity.Name
+            @Greet(context.User.Identity.Name) 👋
         </span>
         <button class="btn btn-link" @onclick="BeginLogout">Log out</button>
     </Authorized>
@@ -17,9 +22,20 @@
 </AuthorizeView>
 
 @code{
+
+    static IReadOnlyCollection<string> _greetingTemplates = new ReadOnlyCollection<string>(
+        JsonSerializer.Deserialize<IEnumerable<string>>(
+            Resources.GreetingsJson).ToList());
+
     private async Task BeginLogout(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo("authentication/logout");
+    }
+
+    private string Greet(string name)
+    {
+        var template = _greetingTemplates.OrderBy(_ => Guid.NewGuid()).First();
+        return string.Format(template, name);
     }
 }

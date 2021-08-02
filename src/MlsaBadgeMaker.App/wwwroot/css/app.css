@@ -1,5 +1,10 @@
-﻿#main {
-    padding-top: 60px;
+﻿body {
+    background-image: url('../img/bg.png');
+    background-attachment: fixed;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-y: bottom;
 }
 
 #blazor-error-ui {
