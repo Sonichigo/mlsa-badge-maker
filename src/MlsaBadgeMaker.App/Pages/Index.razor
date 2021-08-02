@@ -3,11 +3,27 @@
 @inject BadgeMakerClient _badgeMakerClient
 
 
-<div class="row align-items-center">
+<div class="row align-items-center my-5">
     <div class="col-6">
-        <div class="d-grid gap-2 col-6 mx-auto">
-            <img src="@Base64Image" class="rounded-circle" alt="Profile picture with badge"/>
-        </div>
+        @if (IsLoading)
+        {
+            <div class="d-flex align-items-center" style="height: 260px">
+                <div class="spinner-border mx-auto" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(Base64Image))
+            {
+                <div class="d-flex justify-content-center align-items-center gap-3 my-3">
+                    <img src="@Base64Image" class="img-thumbnail rounded-circle ratio ratio-1x1" style="width: 260px" alt="Profile picture with badge"/>
+                    <img src="@Base64Image" class="rounded ratio ratio-1x1" style="width: 180px; height: 180px" alt="Profile picture with badge"/>
+                    <img src="@Base64Image" class="ratio ratio-1x1" style="width: 120px; height: 120px;" alt="Profile picture with badge"/>
+                </div>
+            }
+        }
 
         <div class="mt-3">
             <label for="customImageFile" class="form-label">Use a custom image</label>
@@ -17,7 +33,7 @@
     <div class="col-6">
         <div class="d-grid gap-2 col-6 mx-auto">
             <a class="btn btn-primary" href="@Base64Image" download="mlsa_avatar.png">Download Profile Picture</a>
-            <button class="btn btn-primary">Apply to Microsoft Teams</button>
+            <button class="btn btn-primary" disabled="@string.IsNullOrEmpty(Base64Image)">Apply to Microsoft Teams</button>
         </div>
     </div>
 </div>
@@ -27,23 +43,40 @@
 
     public string Base64Image { get; set; }
 
+    public bool IsLoading { get; set; }
+
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
+    {
+        await DoWorkAsync(async () => await GenerateDefaultImageAsync());
+    }
+
+    private async Task HandleSelected(InputFileChangeEventArgs args)
+    {
+        await DoWorkAsync(async () => await GenerateCustomImageAsync(args.File));
+    }
+
+    private async Task GenerateDefaultImageAsync()
     {
         await using var resultStream = await _badgeMakerClient.CreateBadgeAsync();
         Base64Image = await ConvertImageToBase64(resultStream);
     }
 
-    private async Task HandleSelected(InputFileChangeEventArgs args)
+    private async Task GenerateCustomImageAsync(IBrowserFile file)
     {
-        await using var imageStream = args.File.OpenReadStream();
-        await using var resultStream = await _badgeMakerClient.CreateBadgeAsync(args.File);
+        await using var resultStream = await _badgeMakerClient.CreateBadgeAsync(file);
         Base64Image = await ConvertImageToBase64(resultStream);
+    }
+
+    private async Task DoWorkAsync(Func<Task> action)
+    {
+        IsLoading = true;
+        await action.Invoke();
+        IsLoading = false;
     }
 
     private async Task<string> ConvertImageToBase64(Stream stream)
     {
-        
         stream.Seek(0, SeekOrigin.Begin);
         await using var memoryStream = new MemoryStream();
         await stream.CopyToAsync(memoryStream);

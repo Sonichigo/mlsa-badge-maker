@@ -1,22 +1,20 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="d-flex flex-column h-100">
-    <nav class="navbar navbar-light bg-light flex-shrink-0">
-        <div class="container">
-            <a class="navbar-brand">MLSA Badge Maker</a>
-            <div class="d-flex">
-                <LoginDisplay />
-            </div>
+<nav class="navbar navbar-light bg-light fixed-top mb-5">
+    <div class="container">
+        <a class="navbar-brand">MLSA Badge Maker</a>
+        <div class="d-flex">
+            <LoginDisplay />
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <main class="container py-4 flex-shrink-0" id="main">
-        @Body
-    </main>
+<main class="container py-4" id="main">
+    @Body
+</main>
 
-    <footer class="footer mt-auto py-3 bg-light">
-        <div class="container">
-            <span class="text-muted">Place sticky footer content here.</span>
-        </div>
-    </footer>
-</div>
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+        <span class="text-muted">Developed by <a href="https://linktr.ee/ginomessmer">Gino Messmer</a> &middot; <a href="https://github.com/ginomessmer/mlsa-badge-maker" target="_blank">Source Code</a></span>
+    </div>
+</footer>
