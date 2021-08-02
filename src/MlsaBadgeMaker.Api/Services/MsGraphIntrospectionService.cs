@@ -1,8 +1,8 @@
 ﻿using Microsoft.Graph;
 using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using MlsaBadgeMaker.Api.Helpers;
 
 namespace MlsaBadgeMaker.Api.Services
 {
@@ -11,7 +11,7 @@ namespace MlsaBadgeMaker.Api.Services
         /// <inheritdoc />
         public async Task<bool> IsValidAsync(string token)
         {
-            var graphService = CreateGraphServiceClient(token);
+            var graphService = MsGraphHelpers.CreateGraphServiceClient(token);
 
             try
             {
@@ -26,7 +26,7 @@ namespace MlsaBadgeMaker.Api.Services
 
         public async Task<string> GetPrincipalNameAsync(string token)
         {
-            var graphService = CreateGraphServiceClient(token);
+            var graphService = MsGraphHelpers.CreateGraphServiceClient(token);
 
             try
             {
@@ -41,12 +41,5 @@ namespace MlsaBadgeMaker.Api.Services
                 throw;
             }
         }
-
-        private GraphServiceClient CreateGraphServiceClient(string accessToken) => 
-            new GraphServiceClient(new DelegateAuthenticationProvider(request =>
-            {
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                return Task.CompletedTask;
-            }));
     }
 }
