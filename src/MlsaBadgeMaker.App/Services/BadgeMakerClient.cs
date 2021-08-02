@@ -40,15 +40,32 @@ namespace MlsaBadgeMaker.App.Services
 
             var jwt = await GetTokenAsync();
 
-            var response = await _client.PostAsync($"{_configuration["ApiEndpoint"]}/api/badge", new MultipartFormDataContent
-            {
-                { new StringContent(jwt), "token" },
-                { new StreamContent(imageStream), "image", file.Name }
-            });
+            var response = await _client.PostAsync($"{_configuration["ApiEndpoint"]}/api/badge", 
+                new MultipartFormDataContent
+                {
+                    { new StringContent(jwt), "token" },
+                    { new StreamContent(imageStream), "image", file.Name }
+                });
 
             response.EnsureSuccessStatusCode();
             var outputStream = await response.Content.ReadAsStreamAsync();
             return outputStream;
+        }
+
+        public async Task ApplyBadgeToTeamsAsync(Stream imageStream)
+        {
+            imageStream.Position = 0;
+
+            var jwt = await GetTokenAsync();
+            
+            var response = await _client.PostAsync($"{_configuration["ApiEndpoint"]}/api/apply/teams",
+                new MultipartFormDataContent
+                {
+                    { new StringContent(jwt), "token" },
+                    { new StreamContent(imageStream), "image", "image.png" }
+                });
+
+            response.EnsureSuccessStatusCode();
         }
 
         private async Task<string> GetTokenAsync()
