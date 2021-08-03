@@ -6,6 +6,7 @@ using SixLabors.ImageSharp.Processing;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using MlsaBadgeMaker.Api.Exceptions;
 
 namespace MlsaBadgeMaker.Api.Services
 {
@@ -19,7 +20,7 @@ namespace MlsaBadgeMaker.Api.Services
 
             // Verify
             if (image.Width != image.Height)
-                throw new Exception("Image has wrong dimensions. The aspect ratio must be 1:1.");
+                throw new ImageManipulationException("Image has wrong dimensions. The aspect ratio must be 1:1.");
 
             var badgeBuffer = milestoneName switch
             {

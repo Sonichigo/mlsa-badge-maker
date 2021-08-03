@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using MlsaBadgeMaker.Api.Repositories;
 using MlsaBadgeMaker.Api.Services;
 using System.Threading.Tasks;
+using MlsaBadgeMaker.Api.Exceptions;
 
 namespace MlsaBadgeMaker.Api
 {
@@ -47,9 +49,16 @@ namespace MlsaBadgeMaker.Api
             var pictureStream = imageFormFile.OpenReadStream();
 
             // Generate
-            var outputStream = await _generator.GenerateAsync(pictureStream, member.LevelStatus.LevelName);
+            try
+            {
+                var outputStream = await _generator.GenerateAsync(pictureStream, member.LevelStatus.LevelName);
 
-            return new FileStreamResult(outputStream, "image/png");
+                return new FileStreamResult(outputStream, "image/png");
+            }
+            catch (ImageManipulationException ex)
+            {
+                return new BadRequestObjectResult(ex.Message);
+            }
         }
     }
 }

@@ -52,7 +52,9 @@ namespace MlsaBadgeMaker.App.Services
                     { new StreamContent(imageStream), "image", file.Name }
                 });
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+                throw new ApiException(response);
+
             var outputStream = await response.Content.ReadAsStreamAsync();
             return outputStream;
         }
