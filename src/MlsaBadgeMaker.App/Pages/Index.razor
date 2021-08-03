@@ -18,7 +18,9 @@
 
                 <div class="mt-3">
                     <label for="customImageFile" class="form-label">Upload a custom profile image</label>
-                    <InputFile OnChange="@HandleImageSelected" class="form-control" id="customImageFile"/>
+                    <InputFile OnChange="@HandleImageSelected" class="form-control" id="customImageFile"
+                               accept="image/png, image/jpeg" />
+                    <span class="small text-muted">JPEG or PNG, 5 MB max.</span>
                 </div>
             </div>
         </div>
@@ -109,7 +111,7 @@
                 return;
 
             await _badgeMakerClient.ApplyBadgeToTeamsAsync(ImageStream);
-            SetStatus("Your badge was successfully applied to Microsoft Teams. It may take a while until it fully propagates for all users.");
+            SetStatus("Your badge was successfully applied to Microsoft Teams. It could take up to 24-48 hours until it fully propagates for all users.");
         }
         catch (ApiException ex)
         {

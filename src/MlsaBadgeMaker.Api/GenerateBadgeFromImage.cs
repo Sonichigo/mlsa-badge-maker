@@ -46,6 +46,9 @@ namespace MlsaBadgeMaker.Api
 
             // Get image
             var imageFormFile = req.Form.Files.GetFile("image");
+            if (imageFormFile.Length > 5000000)
+                return new BadRequestObjectResult("The image file size must be less than 5 MB.");
+
             var pictureStream = imageFormFile.OpenReadStream();
 
             // Generate

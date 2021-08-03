@@ -41,7 +41,7 @@ namespace MlsaBadgeMaker.App.Services
 
         public async Task<Stream> CreateBadgeAsync(IBrowserFile file)
         {
-            var imageStream = file.OpenReadStream();
+            var imageStream = file.OpenReadStream(5000000); // 5 MB
 
             var jwt = await GetTokenAsync();
 
