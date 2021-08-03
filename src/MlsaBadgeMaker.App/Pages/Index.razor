@@ -2,6 +2,13 @@
 @attribute [Authorize]
 @inject BadgeMakerClient _badgeMakerClient
 
+@if (!string.IsNullOrEmpty(StatusMessage))
+{
+    <div class="alert alert-dismissible alert-@StatusMessageCssClass" role="alert">
+        @StatusMessage
+        <button type="button" class="btn-close" @onclick="ResetStatusMessage"></button>
+    </div>
+}
 
 <div class="row align-items-center">
     <div class="col-8">
@@ -22,8 +29,15 @@
 
                 <p>Download your new shiny avatar as an image. Alternatively, you can automatically apply your new avatar to your Microsoft Teams account.</p>
                 <div>
-                    <a class="btn btn-primary" href="@ImageBase64" download="mlsa_avatar.png">Download Profile Picture</a>
-                    <button class="btn btn-outline-primary" disabled="@string.IsNullOrEmpty(ImageBase64)" @onclick="HandleApplyToTeams">Apply to Microsoft Teams</button>
+                    <a class="btn btn-primary @(ImageStream is null ? "disabled" : "")" href="@ImageBase64" download="mlsa_avatar.png">Download Profile Picture</a>
+                    <button class="btn btn-outline-primary" disabled="@(IsApplyingToTeams || ImageStream is null)"
+                            @onclick="HandleApplyToTeams">
+                        @if (IsApplyingToTeams)
+                        {
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        }
+                        Apply to Microsoft Teams
+                    </button>
                 </div>
             </div>
         </div>
@@ -43,12 +57,9 @@
                 }
                 else
                 {
-                    if (!string.IsNullOrEmpty(ImageBase64))
-                    {
-                        <div class="d-flex justify-content-center align-items-center gap-3 my-3">
-                            <img src="@ImageBase64" class="img-thumbnail rounded-circle ratio ratio-1x1" style="width: 260px" alt="Profile picture with badge"/>
-                        </div>
-                    }
+                    <div class="d-flex justify-content-center align-items-center gap-3 my-3">
+                        <img src="@(!string.IsNullOrEmpty(ImageBase64) ? ImageBase64 : "/img/default_avatar.svg")" class="img-thumbnail rounded-circle ratio ratio-1x1" style="width: 260px" alt="Profile picture with badge"/>
+                    </div>
                 }
             </div>
         </div>
@@ -64,6 +75,12 @@
 
     public bool IsLoading { get; set; }
 
+    public bool IsApplyingToTeams { get; set; }
+
+    public string StatusMessage { get; set; }
+
+    public bool IsStatusMessageSuccess { get; set; }
+
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
@@ -77,16 +94,27 @@
 
     private async Task HandleApplyToTeams()
     {
+        IsApplyingToTeams = true;
+
         if (ImageStream is null || ImageStream?.Length == 0)
             return;
 
         await _badgeMakerClient.ApplyBadgeToTeamsAsync(ImageStream);
+        SetStatus("Your badge was successfully applied to Microsoft Teams. It may take a while until it fully propagates for all users.");
+        IsApplyingToTeams = false;
     }
 
     private async Task GenerateDefaultImageAsync()
     {
-        ImageStream = await _badgeMakerClient.CreateBadgeAsync();
-        ImageBase64 = await ConvertImageToBase64(ImageStream);
+        try
+        {
+            ImageStream = await _badgeMakerClient.CreateBadgeAsync();
+            ImageBase64 = await ConvertImageToBase64(ImageStream);
+        }
+        catch (ApiException ex)
+        {
+            SetStatus(ex.Message, false);
+        }
     }
 
     private async Task GenerateCustomImageAsync(IBrowserFile file)
@@ -102,6 +130,14 @@
         IsLoading = false;
     }
 
+    private void SetStatus(string text, bool isSuccess = true)
+    {
+        StatusMessage = text;
+        IsStatusMessageSuccess = isSuccess;
+    }
+
+    private string StatusMessageCssClass => IsStatusMessageSuccess ? "success" : "danger";
+
     private async Task<string> ConvertImageToBase64(Stream stream)
     {
         stream.Seek(0, SeekOrigin.Begin);
@@ -109,6 +145,11 @@
         await stream.CopyToAsync(memoryStream);
 
         return $"data:image/png;base64,{Convert.ToBase64String(memoryStream.ToArray())}";
+    }
+
+    private void ResetStatusMessage()
+    {
+        StatusMessage = string.Empty;
     }
 
 }

@@ -1,9 +1,12 @@
+using System;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using MlsaBadgeMaker.App.Exceptions;
 
 namespace MlsaBadgeMaker.App.Services
 {
@@ -29,7 +32,9 @@ namespace MlsaBadgeMaker.App.Services
                     Headers = {{"token", token}}
                 });
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+                throw new ApiException(response);
+
             var outputStream = await response.Content.ReadAsStreamAsync();
             return outputStream;
         }

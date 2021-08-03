@@ -7,6 +7,7 @@ using MlsaBadgeMaker.Api.Repositories;
 using MlsaBadgeMaker.Api.Services;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace MlsaBadgeMaker.Api
 {
@@ -41,6 +42,9 @@ namespace MlsaBadgeMaker.Api
             var member = await _membersRepository.FindAsync(name);
             if (member is null)
                 return new NotFoundResult();
+
+            if (string.IsNullOrEmpty(member.ProfilePictureUrl))
+                return new BadRequestObjectResult("Default profile image is not set in your Student Ambassador profile. Try to upload a custom image instead.");
 
             // Generate
             var pictureStream = await _client.GetStreamAsync(member.ProfilePictureUrl);
