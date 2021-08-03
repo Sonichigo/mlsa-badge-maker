@@ -56,10 +56,13 @@ namespace MlsaBadgeMaker.Api
             {
                 var outputStream = await _generator.GenerateAsync(pictureStream, member.LevelStatus.LevelName);
 
+                log.LogInformation("Generated {milestone} badge for user {username}",
+                    member.LevelStatus.LevelName, username);
                 return new FileStreamResult(outputStream, "image/png");
             }
             catch (ImageManipulationException ex)
             {
+                log.LogWarning(ex, "Manipulation exception occurred for {username}", username);
                 return new BadRequestObjectResult(ex.Message);
             }
         }

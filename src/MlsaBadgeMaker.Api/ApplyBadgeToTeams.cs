@@ -41,11 +41,13 @@ namespace MlsaBadgeMaker.Api
                 var client = MsGraphHelpers.CreateGraphServiceClient(token);
                 await client.Me.Photo.Content.Request().PutAsync(image.OpenReadStream());
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return new BadRequestErrorMessageResult(e.Message);
+                log.LogError(ex, "Error while applying image to Teams");
+                return new BadRequestErrorMessageResult(ex.Message);
             }
 
+            log.LogInformation("Applied image to Teams");
             return new AcceptedResult();
         }
     }

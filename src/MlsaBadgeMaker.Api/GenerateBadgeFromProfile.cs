@@ -52,6 +52,9 @@ namespace MlsaBadgeMaker.Api
             IAvatarGenerator generator = new ImageSharpAvatarGenerator();
             var outputStream = await generator.GenerateAsync(pictureStream, member.LevelStatus.LevelName);
 
+            log.LogInformation("Generated {milestone} badge for user {username} based on custom image",
+                member.LevelStatus.LevelName, name);
+
             return new FileStreamResult(outputStream, "image/png");
         }
     }
