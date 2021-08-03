@@ -17,7 +17,7 @@
                 <h5 class="card-title">Customize</h5>
 
                 <div class="mt-3">
-                    <label for="customImageFile" class="form-label">Use a custom image</label>
+                    <label for="customImageFile" class="form-label">Upload a custom profile image</label>
                     <InputFile OnChange="@HandleImageSelected" class="form-control" id="customImageFile"/>
                 </div>
             </div>
@@ -27,7 +27,7 @@
             <div class="card-body">
                 <h5 class="card-title">Use</h5>
 
-                <p>Download your new shiny avatar as an image. Alternatively, you can automatically apply your new avatar to your Microsoft Teams account.</p>
+                <p>Download your new shiny avatar as an image. Or let us apply your new avatar to your Microsoft Teams account for you.</p>
                 <div>
                     <a class="btn btn-primary @(ImageStream is null ? "disabled" : "")" href="@ImageBase64" download="mlsa_avatar.png">Download Profile Picture</a>
                     <button class="btn btn-outline-primary" disabled="@(IsApplyingToTeams || ImageStream is null)"
