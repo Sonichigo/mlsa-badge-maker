@@ -41,7 +41,7 @@ namespace MlsaBadgeMaker.Api
             var name = await _introspectionService.GetPrincipalNameAsync(token);
             var member = await _membersRepository.FindAsync(name);
             if (member is null)
-                return new NotFoundResult();
+                return new BadRequestObjectResult("Your Student Ambassador profile could not be found to determine your milestone.");
 
             if (string.IsNullOrEmpty(member.ProfilePictureUrl))
                 return new BadRequestObjectResult("Default profile image is not set in your Student Ambassador profile. Try to upload a custom image instead.");

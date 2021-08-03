@@ -11,7 +11,7 @@
 }
 
 <div class="row align-items-center">
-    <div class="col-8">
+    <div class="col-12 col-md-8">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Customize</h5>
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <div class="col-4">
+    <div class="col-12 col-md-4">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Preview</h5>
@@ -58,7 +58,10 @@
                 else
                 {
                     <div class="d-flex justify-content-center align-items-center gap-3 my-3">
-                        <img src="@(!string.IsNullOrEmpty(ImageBase64) ? ImageBase64 : "/img/default_avatar.svg")" class="img-thumbnail rounded-circle ratio ratio-1x1" style="width: 260px" alt="Profile picture with badge"/>
+                        <img src="@(!string.IsNullOrEmpty(ImageBase64) ? ImageBase64 : "/img/default_avatar.svg")"
+                             class="img-thumbnail rounded-circle ratio ratio-1x1"
+                             style="width: 260px"
+                             alt="Profile picture with badge"/>
                     </div>
                 }
             </div>

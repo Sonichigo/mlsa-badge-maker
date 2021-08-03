@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     height: 60px;
-
+    z-index: -100;
     background-image: url('../img/bg.png');
     background-repeat: repeat-x;
     background-position: center;

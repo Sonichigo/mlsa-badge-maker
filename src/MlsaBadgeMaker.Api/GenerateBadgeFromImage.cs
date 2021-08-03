@@ -39,6 +39,8 @@ namespace MlsaBadgeMaker.Api
             // Get user
             var username = await _introspectionService.GetPrincipalNameAsync(token);
             var member = await _membersRepository.FindAsync(username);
+            if (member is null)
+                return new BadRequestObjectResult("Your Student Ambassador profile could not be found to determine your milestone.");
 
             // Get image
             var imageFormFile = req.Form.Files.GetFile("image");
