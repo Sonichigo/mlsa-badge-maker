@@ -92,18 +92,36 @@
         await DoWorkAsync(async () => await GenerateCustomImageAsync(args.File));
     }
 
+    /// <summary>
+    /// Applies the previously generated image to Teams.
+    /// </summary>
+    /// <returns></returns>
     private async Task HandleApplyToTeams()
     {
-        IsApplyingToTeams = true;
+        try
+        {
+            IsApplyingToTeams = true;
 
-        if (ImageStream is null || ImageStream?.Length == 0)
-            return;
+            if (ImageStream is null || ImageStream?.Length == 0)
+                return;
 
-        await _badgeMakerClient.ApplyBadgeToTeamsAsync(ImageStream);
-        SetStatus("Your badge was successfully applied to Microsoft Teams. It may take a while until it fully propagates for all users.");
-        IsApplyingToTeams = false;
+            await _badgeMakerClient.ApplyBadgeToTeamsAsync(ImageStream);
+            SetStatus("Your badge was successfully applied to Microsoft Teams. It may take a while until it fully propagates for all users.");
+        }
+        catch (ApiException ex)
+        {
+            SetStatus(ex.Message, false);
+        }
+        finally
+        {
+            IsApplyingToTeams = false;
+        }
     }
 
+    /// <summary>
+    /// Tries to generate the default image from the user's Student Ambassador profile.
+    /// </summary>
+    /// <returns></returns>
     private async Task GenerateDefaultImageAsync()
     {
         try
@@ -117,12 +135,31 @@
         }
     }
 
+    /// <summary>
+    /// Generates a custom image based on the user's selected file.
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
     private async Task GenerateCustomImageAsync(IBrowserFile file)
     {
-        ImageStream = await _badgeMakerClient.CreateBadgeAsync(file);
-        ImageBase64 = await ConvertImageToBase64(ImageStream);
+        try
+        {
+            ImageStream = await _badgeMakerClient.CreateBadgeAsync(file);
+            ImageBase64 = await ConvertImageToBase64(ImageStream);
+        }
+        catch (ApiException ex)
+        {
+            SetStatus(ex.Message, false);
+        }
     }
 
+    // Helpers
+
+    /// <summary>
+    /// Does work.
+    /// </summary>
+    /// <param name="action"></param>
+    /// <returns></returns>
     private async Task DoWorkAsync(Func<Task> action)
     {
         IsLoading = true;
@@ -130,14 +167,11 @@
         IsLoading = false;
     }
 
-    private void SetStatus(string text, bool isSuccess = true)
-    {
-        StatusMessage = text;
-        IsStatusMessageSuccess = isSuccess;
-    }
-
-    private string StatusMessageCssClass => IsStatusMessageSuccess ? "success" : "danger";
-
+    /// <summary>
+    /// Converts an image stream to a base64 string that can be displayed in the browser.
+    /// </summary>
+    /// <param name="stream"></param>
+    /// <returns></returns>
     private async Task<string> ConvertImageToBase64(Stream stream)
     {
         stream.Seek(0, SeekOrigin.Begin);
@@ -147,6 +181,25 @@
         return $"data:image/png;base64,{Convert.ToBase64String(memoryStream.ToArray())}";
     }
 
+    /// <summary>
+    /// Sets and displays the status message.
+    /// </summary>
+    /// <param name="text">The status message.</param>
+    /// <param name="isSuccess">Indicates whether the operation failed or succeeded.</param>
+    private void SetStatus(string text, bool isSuccess = true)
+    {
+        StatusMessage = text;
+        IsStatusMessageSuccess = isSuccess;
+    }
+
+    /// <summary>
+    /// Computes the CSS class to display for the alert status message.
+    /// </summary>
+    private string StatusMessageCssClass => IsStatusMessageSuccess ? "success" : "danger";
+
+    /// <summary>
+    /// Resets the status message.
+    /// </summary>
     private void ResetStatusMessage()
     {
         StatusMessage = string.Empty;
