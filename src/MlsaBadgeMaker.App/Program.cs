@@ -21,6 +21,8 @@ namespace MlsaBadgeMaker.App
 
             builder.Services.AddMsalAuthentication(options =>
             {
+                options.ProviderOptions.DefaultAccessTokenScopes.Add("User.Read");
+                options.ProviderOptions.DefaultAccessTokenScopes.Add("User.ReadWrite");
                 builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
             });
 
