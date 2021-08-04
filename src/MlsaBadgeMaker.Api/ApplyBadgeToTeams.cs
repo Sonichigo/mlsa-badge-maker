@@ -44,7 +44,7 @@ namespace MlsaBadgeMaker.Api
             catch (Exception ex)
             {
                 log.LogError(ex, "Error while applying image to Teams");
-                return new BadRequestErrorMessageResult(ex.Message);
+                return new BadRequestErrorMessageResult($"An error occurred while applying the image to Teams: {ex.Message}");
             }
 
             log.LogInformation("Applied image to Teams");

@@ -72,7 +72,8 @@ namespace MlsaBadgeMaker.App.Services
                     { new StreamContent(imageStream), "image", "image.png" }
                 });
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+                throw new ApiException(response);
         }
 
         private async Task<string> GetTokenAsync()
