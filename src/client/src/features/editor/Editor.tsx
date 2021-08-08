@@ -1,3 +1,4 @@
+import { Label, PrimaryButton } from '@fluentui/react';
 import React, { useState } from 'react';
 import { Cropper } from 'react-cropper';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -42,7 +43,7 @@ const Editor = () => {
 
   return (
     <div className="editor">
-      <label>Use a custom image</label>
+      <Label>Upload an image</Label>
       <input
         name="imageFile"
         type="file"
@@ -58,7 +59,7 @@ const Editor = () => {
           aspectRatio={1}
           onInitialized={(instance) => setCropper(instance)} />}
         
-        <button onClick={handleCrop}>Crop</button>
+        <PrimaryButton onClick={handleCrop}>Generate</PrimaryButton>
       </div>
     </div>
   );
