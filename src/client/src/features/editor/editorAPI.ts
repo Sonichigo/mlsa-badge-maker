@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { apiEndpoint } from '../../app/config.json';
+import { apiEndpoint } from '../../config/app.json';
 
 export async function generateImage(imageBlob: Blob) {
   let formData = new FormData();

@@ -8,10 +8,23 @@ import * as serviceWorker from './serviceWorker';
 
 import "cropperjs/dist/cropper.css";
 
+// MSAL
+import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
+import { MsalAuthenticationTemplate, MsalProvider } from "@azure/msal-react";
+import { authRequest, msalConfig } from './config/authConfig';
+
+const msalInstance = new PublicClientApplication(msalConfig);
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <MsalProvider instance={msalInstance}>
+        <MsalAuthenticationTemplate
+          interactionType={InteractionType.Redirect}
+          authenticationRequest={authRequest}>
+          <App />
+        </MsalAuthenticationTemplate>
+      </MsalProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
