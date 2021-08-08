@@ -1,13 +1,16 @@
-import { useMsal } from '@azure/msal-react';
 import React, { useEffect } from 'react';
 import './App.css';
-import { useAppDispatch } from './app/hooks';
+
 import { authRequest } from './config/authConfig';
+import { useMsal } from '@azure/msal-react';
+
+import { useAppDispatch } from './app/hooks';
+
 import { setAuthenticated, setUnauthenticated } from './features/auth/authSlice';
 
-import { Counter } from './features/counter/Counter';
 import Editor from './features/editor/Editor';
 import Preview from './features/preview/Preview';
+import Use from './features/use/Use';
 
 function App() {
 
@@ -32,11 +35,8 @@ function App() {
       </div>
 
       <div className="section">
-        <Counter />
-      </div>
-
-      <div className="section">
         <Preview />
+        <Use />
       </div>
     </div>
   );

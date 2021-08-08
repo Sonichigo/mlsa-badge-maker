@@ -1,3 +1,4 @@
+import { Text } from '@fluentui/react';
 import React from 'react'
 import { useAppSelector } from '../../app/hooks';
 import { selectFinalAvatarBlobUrl } from '../editor/editorSlice';
@@ -7,7 +8,9 @@ const Preview = () => {
 
   return (
     <div>
-      <h1>Preview</h1>
+      <div>
+        <Text variant={'xLarge'}>Preview</Text>
+      </div>
       {avatarBlobUrl && <img src={avatarBlobUrl} />}
     </div>
   )

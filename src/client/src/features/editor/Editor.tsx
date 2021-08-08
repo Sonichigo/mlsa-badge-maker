@@ -45,7 +45,7 @@ const Editor = () => {
       let blob = new Blob([x], { type: x.type });
       let blobUrl = URL.createObjectURL(blob);
       dispatch(setCroppedFileBlobUrl(blobUrl));
-      dispatch(generateAsync(blobUrl)).then(x => console.log(x));
+      dispatch(generateAsync(blobUrl));
     });
   }
 
