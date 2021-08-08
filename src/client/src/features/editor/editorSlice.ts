@@ -17,11 +17,13 @@ const initialState: EditorState = {
 
 // Thunks
 export const generateAsync = createAsyncThunk('editor/generateImage',
-  async (fileBlobUrl: string) => {
+  async (fileBlobUrl: string, thunkAPI) => {
     const internalResponse = await fetch(fileBlobUrl);
     const internalBlob = await internalResponse.blob();
 
-    const generatedImageBlobUrl = await generateImage(internalBlob);
+    const state = thunkAPI.getState() as RootState;
+
+    const generatedImageBlobUrl = await generateImage(internalBlob, {token: state.auth.accessToken});
     return generatedImageBlobUrl;
   }
 );
