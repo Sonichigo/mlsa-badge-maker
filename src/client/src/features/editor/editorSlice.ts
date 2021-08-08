@@ -1,24 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface EditorState {
-  file?: File;
+  file: File | null;
   status: 'idle' | 'busy' | 'failed';
   statusMessage: string;
 }
 
 const initialState: EditorState = {
-  file: undefined,
+  file: null,
   status: 'idle',
   statusMessage: '',
 };
 
 export const editorSlice = createSlice({
-  name: "editor",
+  name: 'editor',
   initialState,
   reducers: {
-    setFile: (state, { payload: { file } }) => ({
+    setFile: (state, action: PayloadAction<File | null>) => ({
       ...state,
-      file
+      file: action.payload
     })
   }
 });

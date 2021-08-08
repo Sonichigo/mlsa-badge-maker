@@ -1,33 +1,28 @@
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
+import { setFile } from './editorSlice';
 
 const Editor = () => {
   const dispatch = useAppDispatch();
-  const [file, setFile] = useState<File>();
 
   // read browser file from input
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let files = e.currentTarget.files;
-    if (files?.item(0))
-      setFile(files[0]);
+    if (!files)
+      return;
 
-    if (file) {
-      dispatch({
-        type: 'EDITOR_FILE_CHANGE',
-        payload: {
-          file
-        }
-      });
-    }
+    let file = files.item(0);
+    dispatch(setFile(file));
   };
 
   return (
     <div className="editor">
+      <label>Use a custom image</label>
       <input
+        name="imageFile"
         type="file"
         accept="image/*"
         onChange={onFileChange}
-        style={{ display: 'none' }}
       />
       <div className="editor-container">
         {/* {file && (
