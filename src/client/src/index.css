@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.section {
+  background: #ffffff;
+  padding: 28px;
+  display: block;
+  margin-bottom: 28px;
+  border-radius: 2px;
+  background-clip: padding-box;
+  -webkit-box-shadow: 0 1.6px 3.6px 0 rgb(0 0 0 / 13%), 0 0.3px 0.9px 0 rgb(0 0 0 / 11%);
+  box-shadow: 0 1.6px 3.6px 0 rgb(0 0 0 / 13%), 0 0.3px 0.9px 0 rgb(0 0 0 / 11%);
+  -webkit-transform: translate3d(0,48px,0);
+  transform: translate3d(0,48px,0);
+  -webkit-transition: opacity .3s cubic-bezier(.1,.9,.2,1) 50ms,-webkit-transform .3s cubic-bezier(.1,.9,.2,1);
+  transition: opacity .3s cubic-bezier(.1,.9,.2,1) 50ms,-webkit-transform .3s cubic-bezier(.1,.9,.2,1);
+  transition: transform .3s cubic-bezier(.1,.9,.2,1),opacity .3s cubic-bezier(.1,.9,.2,1) 50ms;
+  transition: transform .3s cubic-bezier(.1,.9,.2,1),opacity .3s cubic-bezier(.1,.9,.2,1) 50ms,-webkit-transform .3s cubic-bezier(.1,.9,.2,1);
+}

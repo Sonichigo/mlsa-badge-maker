@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
+import { generateImage } from "./editorAPI";
 
 // State
 export interface EditorState {
@@ -14,6 +15,17 @@ const initialState: EditorState = {
   statusMessage: '',
 };
 
+// Thunks
+export const generateAsync = createAsyncThunk('editor/generateImage',
+  async (fileBlobUrl: string) => {
+    const internalResponse = await fetch(fileBlobUrl);
+    const internalBlob = await internalResponse.blob();
+
+    const generatedImageBlobUrl = await generateImage(internalBlob);
+    return generatedImageBlobUrl;
+  }
+);
+
 // Reducer
 export const editorSlice = createSlice({
   name: 'editor',
@@ -27,6 +39,24 @@ export const editorSlice = createSlice({
       ...state,
       croppedFileBlobUrl: action.payload,
     }),
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(generateAsync.pending, (state) => ({
+        ...state,
+        status: 'busy',
+        statusMessage: 'Generating image...',
+      }))
+      // .addCase(generateAsync.rejected, (state) => ({
+      //   ...state,
+      //   status: 'failed',
+      //   statusMessage: 'Failed to generate image',
+      // }))
+      .addCase(generateAsync.fulfilled, (state) => ({
+        ...state,
+        status: 'idle',
+        statusMessage: '',
+      }));
   }
 });
 

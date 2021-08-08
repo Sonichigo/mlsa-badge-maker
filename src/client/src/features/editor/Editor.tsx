@@ -1,8 +1,15 @@
-import { Label, PrimaryButton } from '@fluentui/react';
 import React, { useState } from 'react';
-import { Cropper } from 'react-cropper';
+
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectFileBlobUrl, setCroppedFileBlobUrl, setFileBlobUrl } from './editorSlice';
+import {
+  setCroppedFileBlobUrl,
+  setFileBlobUrl,
+  generateAsync,
+  selectFileBlobUrl
+} from './editorSlice';
+
+import { Label, PrimaryButton } from '@fluentui/react';
+import { Cropper } from 'react-cropper';
 
 const Editor = () => {
   // App State
@@ -38,11 +45,12 @@ const Editor = () => {
       let blob = new Blob([x], { type: x.type });
       let blobUrl = URL.createObjectURL(blob);
       dispatch(setCroppedFileBlobUrl(blobUrl));
+      dispatch(generateAsync(blobUrl));
     });
   }
 
   return (
-    <div className="editor">
+    <div>
       <Label>Upload an image</Label>
       <input
         name="imageFile"
@@ -59,7 +67,8 @@ const Editor = () => {
           aspectRatio={1}
           onInitialized={(instance) => setCropper(instance)} />}
         
-        <PrimaryButton onClick={handleCrop}>Generate</PrimaryButton>
+        <PrimaryButton onClick={handleCrop}
+          disabled={!fileBlobUrl}>Generate</PrimaryButton>
       </div>
     </div>
   );
