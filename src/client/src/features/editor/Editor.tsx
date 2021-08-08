@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { useAppDispatch } from '../../app/hooks';
-import { setFile } from './editorSlice';
+import { Cropper } from 'react-cropper';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectFileBlobUrl, setFileBlobUrl } from './editorSlice';
 
 const Editor = () => {
+  const fileBlobUrl = useAppSelector(selectFileBlobUrl);
   const dispatch = useAppDispatch();
 
   // read browser file from input
@@ -12,7 +14,12 @@ const Editor = () => {
       return;
 
     let file = files.item(0);
-    dispatch(setFile(file));
+    if (!file)
+      return;
+    
+    let blob = new Blob([file], { type: file.type });
+    let blobUrl = URL.createObjectURL(blob);
+    dispatch(setFileBlobUrl(blobUrl));
   };
 
   return (
@@ -24,10 +31,12 @@ const Editor = () => {
         accept="image/*"
         onChange={onFileChange}
       />
+      <Cropper
+        src=""/>
       <div className="editor-container">
-        {/* {file && (
-          <img src={file} />
-        )} */}
+        {fileBlobUrl && (
+          <img src={fileBlobUrl} />
+        )}
       </div>
     </div>
   );

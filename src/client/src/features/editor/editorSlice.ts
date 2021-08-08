@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
 
 export interface EditorState {
-  file: File | null;
+  fileBlobUrl?: string;
   status: 'idle' | 'busy' | 'failed';
   statusMessage: string;
 }
 
 const initialState: EditorState = {
-  file: null,
+  fileBlobUrl: undefined,
   status: 'idle',
   statusMessage: '',
 };
@@ -16,13 +17,15 @@ export const editorSlice = createSlice({
   name: 'editor',
   initialState,
   reducers: {
-    setFile: (state, action: PayloadAction<File | null>) => ({
+    setFileBlobUrl: (state, action: PayloadAction<string>) => ({
       ...state,
-      file: action.payload
+      fileBlobUrl: action.payload,
     })
   }
 });
 
-export const { setFile } = editorSlice.actions;
+export const { setFileBlobUrl } = editorSlice.actions;
+
+export const selectFileBlobUrl = (state: RootState) => state.editor.fileBlobUrl;
 
 export default editorSlice.reducer;
