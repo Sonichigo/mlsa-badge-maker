@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { Cropper } from 'react-cropper';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectFileBlobUrl, setFileBlobUrl } from './editorSlice';
+import { selectFileBlobUrl, setCroppedFileBlobUrl, setFileBlobUrl } from './editorSlice';
 
 const Editor = () => {
+  // App State
   const fileBlobUrl = useAppSelector(selectFileBlobUrl);
   const dispatch = useAppDispatch();
+
+  // Scoped State
+  const [cropper, setCropper] = useState<Cropper>();
 
   // read browser file from input
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,6 +26,20 @@ const Editor = () => {
     dispatch(setFileBlobUrl(blobUrl));
   };
 
+  const handleCrop = () => {
+    if (!cropper)
+      return;
+    
+    cropper.getCroppedCanvas().toBlob(x => {
+      if (!x)
+        return;
+
+      let blob = new Blob([x], { type: x.type });
+      let blobUrl = URL.createObjectURL(blob);
+      dispatch(setCroppedFileBlobUrl(blobUrl));
+    });
+  }
+
   return (
     <div className="editor">
       <label>Use a custom image</label>
@@ -31,12 +49,16 @@ const Editor = () => {
         accept="image/*"
         onChange={onFileChange}
       />
-      <Cropper
-        src=""/>
       <div className="editor-container">
-        {fileBlobUrl && (
-          <img src={fileBlobUrl} />
-        )}
+        {fileBlobUrl && <Cropper src={fileBlobUrl}
+          responsive={true}
+          guides={true}
+          style={{ height: 400, width: "100%" }}
+          initialAspectRatio={1}
+          aspectRatio={1}
+          onInitialized={(instance) => setCropper(instance)} />}
+        
+        <button onClick={handleCrop}>Crop</button>
       </div>
     </div>
   );
