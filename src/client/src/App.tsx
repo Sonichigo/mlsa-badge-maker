@@ -4,8 +4,9 @@ import './App.css';
 import { authRequest } from './config/authConfig';
 import { useMsal } from '@azure/msal-react';
 
-import { useAppDispatch } from './app/hooks';
+import { Stack } from '@fluentui/react';
 
+import { useAppDispatch } from './app/hooks';
 import { setAuthenticated, setUnauthenticated } from './features/auth/authSlice';
 
 import Editor from './features/editor/Editor';
@@ -30,14 +31,16 @@ function App() {
 
   return (
     <div className="container">
-      <div className="section">
-        <Editor />
-      </div>
+      <Stack horizontal horizontalAlign="center" verticalAlign="center" gap={4}>
+        <div className="section">
+          <Editor />
+        </div>
 
-      <div className="section">
-        <Preview />
-        <Use />
-      </div>
+        <div className="section">
+          <Preview />
+          <Use />
+        </div>
+      </Stack>
     </div>
   );
 }

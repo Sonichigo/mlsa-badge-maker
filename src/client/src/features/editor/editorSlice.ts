@@ -51,7 +51,7 @@ export const editorSlice = createSlice({
       .addCase(generateAsync.pending, (state) => ({
         ...state,
         status: 'busy',
-        statusMessage: 'Generating image...',
+        statusMessage: '',
       }))
       .addCase(generateAsync.rejected, (state) => ({
         ...state,

@@ -56,7 +56,7 @@ const Editor = () => {
   return (
     <div>
       <Stack>
-        {status.statusMessage && <Alert status={status.status} statusMessage={status.statusMessage} />}
+        <Alert status={status.status} statusMessage={status.statusMessage} />
 
         <Stack gap={4}>
           <Label>Upload an image</Label>
