@@ -5,15 +5,19 @@ import {
   setCroppedFileBlobUrl,
   setFileBlobUrl,
   generateAsync,
-  selectFileBlobUrl
+  selectFileBlobUrl,
+  selectStatus
 } from './editorSlice';
 
-import { Label, PrimaryButton } from '@fluentui/react';
+import { Label, PrimaryButton, Stack, Spinner } from '@fluentui/react';
 import { Cropper } from 'react-cropper';
+import Alert from "../../components/Alert";
 
 const Editor = () => {
   // App State
   const fileBlobUrl = useAppSelector(selectFileBlobUrl);
+  const status = useAppSelector(selectStatus);
+
   const dispatch = useAppDispatch();
 
   // Scoped State
@@ -51,25 +55,38 @@ const Editor = () => {
 
   return (
     <div>
-      <Label>Upload an image</Label>
-      <input
-        name="imageFile"
-        type="file"
-        accept="image/*"
-        onChange={onFileChange}
-      />
-      <div className="editor-container">
-        {fileBlobUrl && <Cropper src={fileBlobUrl}
-          responsive={true}
-          guides={true}
-          style={{ height: 400, width: "100%" }}
-          initialAspectRatio={1}
-          aspectRatio={1}
-          onInitialized={(instance) => setCropper(instance)} />}
-        
-        <PrimaryButton onClick={handleCrop}
-          disabled={!fileBlobUrl}>Generate</PrimaryButton>
-      </div>
+      <Stack>
+        {status.statusMessage && <Alert status={status.status} statusMessage={status.statusMessage} />}
+
+        <Stack gap={4}>
+          <Label>Upload an image</Label>
+          <input
+            name="imageFile"
+            type="file"
+            accept="image/*"
+            onChange={onFileChange}
+          />
+        </Stack>
+
+        <Stack gap={4}>
+          {fileBlobUrl && <Cropper src={fileBlobUrl}
+                                   responsive={true}
+                                   guides={true}
+                                   style={{ height: 400, width: "100%" }}
+                                   initialAspectRatio={1}
+                                   aspectRatio={1}
+                                   onInitialized={(instance) => setCropper(instance)} />}
+
+          <Stack horizontal gap={4}>
+            <PrimaryButton onClick={handleCrop}
+                           disabled={!fileBlobUrl || status.status == 'busy'}>
+              Generate
+            </PrimaryButton>
+
+            {status.status == 'busy' && <Spinner />}
+          </Stack>
+        </Stack>
+      </Stack>
     </div>
   );
 };

@@ -1,14 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { generateImage } from "./editorAPI";
+import StatusState from "../../shared/StatusState";
 
 // State
-export interface EditorState {
+export interface EditorState extends StatusState {
   fileBlobUrl?: string;
   croppedFileBlobUrl?: string;
   finalAvatarBlobUrl?: string;
-  status: 'idle' | 'busy' | 'failed';
-  statusMessage: string;
 }
 
 const initialState: EditorState = {
@@ -73,6 +72,7 @@ export const { setFileBlobUrl, setCroppedFileBlobUrl, setFinalAvatarBlobUrl } = 
 
 // Selectors
 export const selectFileBlobUrl = (state: RootState) => state.editor.fileBlobUrl;
+export const selectStatus = (state: RootState) => ({ status: state.editor.status, statusMessage: state.editor.statusMessage }) as StatusState;
 export const selectCroppedFileBlobUrl = (state: RootState) => state.editor.croppedFileBlobUrl;
 export const selectFinalAvatarBlobUrl = (state: RootState) => state.editor.finalAvatarBlobUrl;
 

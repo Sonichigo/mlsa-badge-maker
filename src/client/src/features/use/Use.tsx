@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {RootState} from "../../app/store";
 import {applyTeamsAsync, downloadImageAsync, selectBusy} from './useSlice';
+import Alert from "../../components/Alert";
 
 interface UseProps {
   enabled?: boolean;
@@ -21,13 +22,7 @@ const Use = (props: UseProps)  => {
   return (
     <div>
       <Stack gap={8}>
-        {busy.statusMessage && <MessageBar messageBarType={(() => {
-          switch(busy.status) {
-            case 'busy': return MessageBarType.info;
-            case 'failed': return MessageBarType.error;
-            case 'success': return MessageBarType.success;
-          }
-        })()}>{busy.statusMessage}</MessageBar>}
+        {busy.statusMessage && <Alert status={busy.status} statusMessage={busy.statusMessage} />}
 
         <Stack horizontal gap={4}>
           <PrimaryButton disabled={!props.enabled || busy.status == 'busy'} onClick={() => dispatch(applyTeamsAsync())}>Apply to Teams</PrimaryButton>
