@@ -26,7 +26,7 @@ function App() {
       
       dispatch(action);
     });
-  }, []);
+  });
 
   return (
     <div className="container">

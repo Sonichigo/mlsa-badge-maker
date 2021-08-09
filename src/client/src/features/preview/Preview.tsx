@@ -11,7 +11,7 @@ const Preview = () => {
       <div>
         <Text variant={'xLarge'}>Preview</Text>
       </div>
-      {avatarBlobUrl && <img src={avatarBlobUrl} />}
+      {avatarBlobUrl && <img src={avatarBlobUrl} alt="Preview of your avatar" />}
     </div>
   )
 }

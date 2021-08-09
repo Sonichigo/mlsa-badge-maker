@@ -1,4 +1,3 @@
-import { AuthenticationResult } from "@azure/msal-browser";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 
