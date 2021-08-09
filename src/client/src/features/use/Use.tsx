@@ -25,13 +25,20 @@ const Use = (props: UseProps)  => {
         {busy.statusMessage && <Alert status={busy.status} statusMessage={busy.statusMessage} />}
 
         <Stack horizontal gap={4}>
-          <PrimaryButton disabled={!props.enabled || busy.status == 'busy'} onClick={() => dispatch(applyTeamsAsync())}>Apply to Teams</PrimaryButton>
-          <PrimaryButton disabled={!props.enabled || busy.status == 'busy'} onClick={() => dispatch(downloadImageAsync())}>Download Image</PrimaryButton>
+          <Stack.Item grow={2}>
+            <PrimaryButton disabled={!props.enabled || busy.status == 'busy'} onClick={() => dispatch(applyTeamsAsync())}
+                           className={'fill'}>Apply to Teams</PrimaryButton>
+          </Stack.Item>
+          <Stack.Item grow={2}>
+            <PrimaryButton disabled={!props.enabled || busy.status == 'busy'} onClick={() => dispatch(downloadImageAsync())}
+                           className={'fill'}>Download Image</PrimaryButton>
+          </Stack.Item>
+
+          {busy.status == 'busy' && <Stack.Item grow={1}><Spinner /></Stack.Item>}
+
           <a id="download-placebo" aria-hidden="true"
              href={props.downloadAvatarUrl} download="mlsa_avatar.png"
              rel="noreferrer" target="_blank" style={{display: 'none'}}>Download Image</a>
-
-          {busy.status == 'busy' && <Spinner />}
         </Stack>
       </Stack>
     </div>

@@ -72,7 +72,7 @@ const Editor = () => {
           {fileBlobUrl && <Cropper src={fileBlobUrl}
                                    responsive={true}
                                    guides={true}
-                                   style={{ height: 400, width: "100%" }}
+                                   style={{ height: 400, width: 400 }}
                                    initialAspectRatio={1}
                                    aspectRatio={1}
                                    onInitialized={(instance) => setCropper(instance)} />}
