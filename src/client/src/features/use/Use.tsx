@@ -1,10 +1,12 @@
 import React from 'react'
-import {PrimaryButton} from "@fluentui/react";
+import {MessageBar, MessageBarType, PrimaryButton, Spinner} from "@fluentui/react";
+import {Stack} from '@fluentui/react/lib/Stack';
 
-import { useAppDispatch } from '../../app/hooks';
-import { applyTeamsAsync, downloadImageAsync } from './useSlice';
-import {RootState} from "../../app/store";
 import {connect} from "react-redux";
+
+import {useAppDispatch, useAppSelector} from '../../app/hooks';
+import {RootState} from "../../app/store";
+import {applyTeamsAsync, downloadImageAsync, selectBusy} from './useSlice';
 
 interface UseProps {
   enabled?: boolean;
@@ -14,14 +16,29 @@ interface UseProps {
 const Use = (props: UseProps)  => {
 
   const dispatch = useAppDispatch();
+  const busy = useAppSelector(selectBusy);
 
   return (
     <div>
-      <PrimaryButton disabled={!props.enabled} onClick={() => dispatch(applyTeamsAsync())}>Apply to Teams</PrimaryButton>
-      <PrimaryButton disabled={!props.enabled} onClick={() => dispatch(downloadImageAsync())}>Download Image</PrimaryButton>
-      <a id="download-placebo" aria-hidden="true"
-         href={props.downloadAvatarUrl} download="mlsa_avatar.png"
-         rel="noreferrer" target="_blank" style={{display: 'hidden'}}>Download Image</a>
+      <Stack gap={8}>
+        {busy.statusMessage && <MessageBar messageBarType={(() => {
+          switch(busy.status) {
+            case 'busy': return MessageBarType.info;
+            case 'failed': return MessageBarType.error;
+            case 'success': return MessageBarType.success;
+          }
+        })()}>{busy.statusMessage}</MessageBar>}
+
+        <Stack horizontal gap={4}>
+          <PrimaryButton disabled={!props.enabled || busy.status == 'busy'} onClick={() => dispatch(applyTeamsAsync())}>Apply to Teams</PrimaryButton>
+          <PrimaryButton disabled={!props.enabled || busy.status == 'busy'} onClick={() => dispatch(downloadImageAsync())}>Download Image</PrimaryButton>
+          <a id="download-placebo" aria-hidden="true"
+             href={props.downloadAvatarUrl} download="mlsa_avatar.png"
+             rel="noreferrer" target="_blank" style={{display: 'none'}}>Download Image</a>
+
+          {busy.status == 'busy' && <Spinner />}
+        </Stack>
+      </Stack>
     </div>
   );
 }
