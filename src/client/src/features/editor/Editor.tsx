@@ -65,13 +65,13 @@ const Editor = () => {
       <Alert status={status.status} statusMessage={status.statusMessage} />
 
       <Stack gap={4}>
-        {fileBlobUrl && <Cropper src={fileBlobUrl}
-                                 responsive={true}
-                                 guides={true}
-          // style={{ width: 400 }}
-                                 aspectRatio={1}
-                                 viewMode={3}
-                                 onInitialized={(instance) => setCropper(instance)} />}
+        {fileBlobUrl &&
+          <Cropper src={fileBlobUrl}
+                   responsive={true}
+                   guides={true}
+                   aspectRatio={1}
+                   viewMode={3}
+                   onInitialized={(instance) => setCropper(instance)} />}
       </Stack>
 
       <Stack gap={4}>

@@ -43,7 +43,8 @@ function App() {
               <Editor />
             </Stack>
           </div>
-          <div className="fill card">
+
+          <div className="fill card mt-3">
             <Stack gap={4}>
               <Text variant={'xLarge'}>Preview</Text>
               <Preview />
@@ -55,9 +56,11 @@ function App() {
           </div>
         </div>
 
-        <footer className="my-3 text-center">
-          <span>Developed by <a href="https://linktr.ee/ginomessmer">Gino Messmer</a></span> <br/>
-          <span>Built with Blazor and Azure Functions. Proudly hosted on Azure Static Web Apps.</span> <br/>
+        <footer className="py-3 text-center">
+          <p>
+            <span>Developed by <a href="https://linktr.ee/ginomessmer">Gino Messmer</a></span> <br/>
+            <span>Proudly hosted on Azure Static Web Apps</span> <br/>
+          </p>
           <a href="https://github.com/ginomessmer/mlsa-badge-maker" target="_blank" rel="noreferrer">Source Code</a> · <a href="https://github.com/ginomessmer/mlsa-badge-maker/discussions/new" target="_blank" rel="noreferrer">Provide Feedback</a>
         </footer>
       </div>
