@@ -25,23 +25,25 @@ const Editor = () => {
     maxSize: 3000000
   });
 
-  // read browser file from input
-  const onFileChange = (files: FileList | File[]) => {
-    if (!files)
-      return;
+  useEffect(() => {
+    // read browser file from input
+    const onFileChange = (files: FileList | File[]) => {
+      if (!files)
+        return;
 
-    let file = files[0];
-    if (!file)
-      return;
+      let file = files[0];
+      if (!file)
+        return;
 
-    setFileName(file.name);
-    
-    let blob = new Blob([file], { type: file.type });
-    let blobUrl = URL.createObjectURL(blob);
-    dispatch(setFileBlobUrl(blobUrl));
-  };
+      setFileName(file.name);
 
-  useEffect(() => onFileChange(acceptedFiles), [acceptedFiles]);
+      let blob = new Blob([file], { type: file.type });
+      let blobUrl = URL.createObjectURL(blob);
+      dispatch(setFileBlobUrl(blobUrl));
+    };
+
+    onFileChange(acceptedFiles);
+  }, [acceptedFiles, dispatch]);
 
   const handleCrop = () => {
     if (!cropper)

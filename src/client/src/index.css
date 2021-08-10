@@ -34,7 +34,7 @@ code {
 
 .dropzone {
   display: block;
-  /*height: 50px;*/
+  background: rgba(43, 110, 255, 0.1);
   border-radius: 4px;
   border: rgba(0,0,0,0.3) 2px dotted;
 
