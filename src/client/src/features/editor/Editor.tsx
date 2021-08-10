@@ -25,8 +25,6 @@ const Editor = () => {
     maxSize: 3000000
   });
 
-  useEffect(() => onFileChange(acceptedFiles), [acceptedFiles]);
-
   // read browser file from input
   const onFileChange = (files: FileList | File[]) => {
     if (!files)
@@ -42,6 +40,8 @@ const Editor = () => {
     let blobUrl = URL.createObjectURL(blob);
     dispatch(setFileBlobUrl(blobUrl));
   };
+
+  useEffect(() => onFileChange(acceptedFiles), [acceptedFiles]);
 
   const handleCrop = () => {
     if (!cropper)
@@ -88,8 +88,8 @@ const Editor = () => {
 
       <Stack horizontal gap={4}>
         <PrimaryButton onClick={handleCrop} className="w-100"
-                       disabled={!fileBlobUrl || status.status == 'busy'}>
-          {status.status == 'busy' ? <Spinner className="ml-5" /> : "Generate"}
+                       disabled={!fileBlobUrl || status.status === 'busy'}>
+          {status.status === 'busy' ? <Spinner className="ml-5" /> : "Generate"}
         </PrimaryButton>
       </Stack>
     </Stack>

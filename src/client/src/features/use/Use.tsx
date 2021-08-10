@@ -1,13 +1,13 @@
+import { PrimaryButton, Spinner } from "@fluentui/react";
+import { Stack } from '@fluentui/react/lib/Stack';
 import React from 'react'
-import {MessageBar, MessageBarType, PrimaryButton, Spinner} from "@fluentui/react";
-import {Stack} from '@fluentui/react/lib/Stack';
 
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
-import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {RootState} from "../../app/store";
-import {applyTeamsAsync, downloadImageAsync, selectBusy} from './useSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { RootState } from "../../app/store";
 import Alert from "../../components/Alert";
+import { applyTeamsAsync, downloadImageAsync, selectBusy } from './useSlice';
 
 interface UseProps {
   enabled?: boolean;
@@ -26,15 +26,15 @@ const Use = (props: UseProps)  => {
 
         <Stack horizontal gap={4}>
           <Stack.Item grow={2}>
-            <PrimaryButton disabled={!props.enabled || busy.status == 'busy'} onClick={() => dispatch(applyTeamsAsync())}
+            <PrimaryButton disabled={!props.enabled || busy.status === 'busy'} onClick={() => dispatch(applyTeamsAsync())}
                            className={'fill'}>Apply to Teams</PrimaryButton>
           </Stack.Item>
           <Stack.Item grow={2}>
-            <PrimaryButton disabled={!props.enabled || busy.status == 'busy'} onClick={() => dispatch(downloadImageAsync())}
+            <PrimaryButton disabled={!props.enabled || busy.status === 'busy'} onClick={() => dispatch(downloadImageAsync())}
                            className={'fill'}>Download Image</PrimaryButton>
           </Stack.Item>
 
-          {busy.status == 'busy' && <Stack.Item grow={1}><Spinner /></Stack.Item>}
+          {busy.status === 'busy' && <Stack.Item grow={1}><Spinner /></Stack.Item>}
 
           <a id="download-placebo" aria-hidden="true"
              href={props.downloadAvatarUrl} download="mlsa_avatar.png"
