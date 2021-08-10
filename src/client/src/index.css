@@ -14,10 +14,6 @@ html,body {
   height:100%;
 }
 
-div.app {
-  padding-top: 32px;
-}
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

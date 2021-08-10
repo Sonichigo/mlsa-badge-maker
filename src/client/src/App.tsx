@@ -55,6 +55,19 @@ function App() {
             </div>
           </div>
         </div>
+
+        <footer className="my-3">
+          <div className="row">
+            <div className="col text-sm">
+              <span>Developed by <a href="https://linktr.ee/ginomessmer">Gino Messmer</a></span> <br/>
+              <span>Built with Blazor and Azure Functions. Proudly hosted on Azure Static Web Apps.</span>
+            </div>
+            <div className="col-auto">
+              <a href="https://github.com/ginomessmer/mlsa-badge-maker" target="_blank">Source Code</a> · <a href="https://github.com/ginomessmer/mlsa-badge-maker/discussions/new" target="_blank">Provide Feedback</a>
+            </div>
+          </div>
+        </footer>
+
       </div>
     </div>
   );
