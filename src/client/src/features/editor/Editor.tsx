@@ -1,17 +1,11 @@
-import React, { useState } from 'react';
+import { Label, PrimaryButton, Spinner, Stack, Text } from '@fluentui/react';
+import React, { useEffect, useState } from 'react';
+import { Cropper } from 'react-cropper';
+import { useDropzone } from 'react-dropzone';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  setCroppedFileBlobUrl,
-  setFileBlobUrl,
-  generateAsync,
-  selectFileBlobUrl,
-  selectStatus
-} from './editorSlice';
-
-import { Label, PrimaryButton, Stack, Spinner } from '@fluentui/react';
-import { Cropper } from 'react-cropper';
 import Alert from "../../components/Alert";
+import { generateAsync, selectFileBlobUrl, selectStatus, setCroppedFileBlobUrl, setFileBlobUrl } from './editorSlice';
 
 const Editor = () => {
   // App State
@@ -22,16 +16,27 @@ const Editor = () => {
 
   // Scoped State
   const [cropper, setCropper] = useState<Cropper>();
+  const [fileName, setFileName] = useState<string>('');
+
+  // File upload
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+    accept: 'image/*',
+    maxFiles: 1,
+    maxSize: 3000000
+  });
+
+  useEffect(() => onFileChange(acceptedFiles), [acceptedFiles]);
 
   // read browser file from input
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let files = e.currentTarget.files;
+  const onFileChange = (files: FileList | File[]) => {
     if (!files)
       return;
 
-    let file = files.item(0);
+    let file = files[0];
     if (!file)
       return;
+
+    setFileName(file.name);
     
     let blob = new Blob([file], { type: file.type });
     let blobUrl = URL.createObjectURL(blob);
@@ -54,40 +59,40 @@ const Editor = () => {
   }
 
   return (
-    <div>
-      <Stack>
-        <Alert status={status.status} statusMessage={status.statusMessage} />
+    <Stack gap={8}>
+      <Alert status={status.status} statusMessage={status.statusMessage} />
 
-        <Stack gap={4}>
-          <Label>Upload an image</Label>
-          <input
-            name="imageFile"
-            type="file"
-            accept="image/*"
-            onChange={onFileChange}
-          />
-        </Stack>
-
-        <Stack gap={4}>
-          {fileBlobUrl && <Cropper src={fileBlobUrl}
-                                   responsive={true}
-                                   guides={true}
-                                   style={{ height: 400, width: 400 }}
-                                   initialAspectRatio={1}
-                                   aspectRatio={1}
-                                   onInitialized={(instance) => setCropper(instance)} />}
-
-          <Stack horizontal gap={4}>
-            <PrimaryButton onClick={handleCrop}
-                           disabled={!fileBlobUrl || status.status == 'busy'}>
-              Generate
-            </PrimaryButton>
-
-            {status.status == 'busy' && <Spinner />}
-          </Stack>
-        </Stack>
+      <Stack gap={4}>
+        {fileBlobUrl && <Cropper src={fileBlobUrl}
+                                 responsive={true}
+                                 guides={true}
+          // style={{ width: 400 }}
+                                 aspectRatio={1}
+                                 viewMode={3}
+                                 onInitialized={(instance) => setCropper(instance)} />}
       </Stack>
-    </div>
+
+      <Stack gap={4}>
+        <Label>Upload an image</Label>
+
+        <div {...getRootProps({className: 'dropzone'})}>
+          <input {...getInputProps()} />
+
+          <Text>
+            Drag an image or click here to upload <br/>
+            <small>{fileName}</small>
+
+          </Text>
+        </div>
+      </Stack>
+
+      <Stack horizontal gap={4}>
+        <PrimaryButton onClick={handleCrop} className="w-100"
+                       disabled={!fileBlobUrl || status.status == 'busy'}>
+          {status.status == 'busy' ? <Spinner className="ml-5" /> : "Generate"}
+        </PrimaryButton>
+      </Stack>
+    </Stack>
   );
 };
 

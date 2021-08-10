@@ -1,5 +1,5 @@
-import {Image, ImageFit, Shimmer, ShimmerElementType} from '@fluentui/react';
 import React from 'react'
+import {Image, ImageFit, Text} from '@fluentui/react';
 import {useAppSelector} from '../../app/hooks';
 import {selectFinalAvatarBlobUrl} from '../editor/editorSlice';
 
@@ -9,8 +9,8 @@ const Preview = () => {
   return (
     <div>
       {avatarBlobUrl
-        ? <Image src={avatarBlobUrl} imageFit={ImageFit.cover} alt="Preview of your avatar" width={400} height={400} />
-        : <Shimmer shimmerElements={[{type: ShimmerElementType.circle, width: 400, height: 400}]} />}
+        ? <Image src={avatarBlobUrl} imageFit={ImageFit.cover} alt="Preview of your avatar" />
+        : <Text variant={'small'}>Generate your avatar using the editor above first.</Text>}
     </div>
   )
 }

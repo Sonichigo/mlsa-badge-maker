@@ -30,21 +30,32 @@ function App() {
   });
 
   return (
-    <div className="container">
-      <Stack horizontal horizontalAlign="center" verticalAlign="center" gap={8}>
-        <div className="section">
-          <Text variant={'xLarge'}>Edit your Avatar</Text>
-          <Editor />
+    <div className="app">
+      <div className="container">
+        <div className="my-3">
+          <Text variant="xLarge">Student Ambassadors Badge Maker</Text>
         </div>
+        <div className="row g-3">
+          <div className="col-12 col-lg-6 card">
+            <Stack gap={4}>
+              <Text variant={'xLarge'}>Edit your Avatar</Text>
+              <Editor />
+            </Stack>
+          </div>
+          <div className="col-12 col-lg-6 card">
+            <div className="d-flex flex-column h-100">
+              <Stack gap={4}>
+                <Text variant={'xLarge'}>Preview</Text>
+                <Preview />
+              </Stack>
 
-        <div className="section">
-          <Stack gap={4}>
-            <Text variant={'xLarge'}>Preview</Text>
-            <Preview />
-            <Use />
-          </Stack>
+              <div className="mt-auto">
+                <Use />
+              </div>
+            </div>
+          </div>
         </div>
-      </Stack>
+      </div>
     </div>
   );
 }
