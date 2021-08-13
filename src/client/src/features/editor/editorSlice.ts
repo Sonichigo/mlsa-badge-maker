@@ -33,6 +33,11 @@ export const editorSlice = createSlice({
   name: 'editor',
   initialState,
   reducers: {
+    setStatus: (state, payload: PayloadAction<StatusState>) => ({
+      ...state,
+      status: payload.payload.status,
+      statusMessage: payload.payload.statusMessage,
+    }),
     setFileBlobUrl: (state, action: PayloadAction<string>) => ({
       ...state,
       fileBlobUrl: action.payload,
@@ -68,7 +73,7 @@ export const editorSlice = createSlice({
 });
 
 // Actions
-export const { setFileBlobUrl, setCroppedFileBlobUrl, setFinalAvatarBlobUrl } = editorSlice.actions;
+export const { setFileBlobUrl, setCroppedFileBlobUrl, setFinalAvatarBlobUrl, setStatus } = editorSlice.actions;
 
 // Selectors
 export const selectFileBlobUrl = (state: RootState) => state.editor.fileBlobUrl;

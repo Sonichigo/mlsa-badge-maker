@@ -5,7 +5,7 @@ import { useDropzone } from 'react-dropzone';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import Alert from "../../components/Alert";
-import { generateAsync, selectFileBlobUrl, selectStatus, setCroppedFileBlobUrl, setFileBlobUrl } from './editorSlice';
+import { generateAsync, selectFileBlobUrl, selectStatus, setCroppedFileBlobUrl, setFileBlobUrl, setStatus } from './editorSlice';
 
 const Editor = () => {
   // App State
@@ -19,31 +19,34 @@ const Editor = () => {
   const [fileName, setFileName] = useState<string>('');
 
   // File upload
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
+  const { acceptedFiles, getRootProps, getInputProps, fileRejections } = useDropzone({
+    accept: 'image/png,image/jpeg',
     maxFiles: 1,
-    maxSize: 3000000
+    // max size should be 3 MB
+    maxSize: 3 * 1024 * 1024,
+    onDrop: (files: File[]) => onFileChange(files),
+    onDropRejected: rejections => {
+      const errorMessage = rejections[0].errors.map(error => error.message).join('\n');
+      dispatch(setStatus({ status: 'failed', statusMessage: errorMessage }));
+    },
+    onDropAccepted: () => dispatch(setStatus({ status: 'idle', statusMessage: '' }))
   });
 
-  useEffect(() => {
-    // read browser file from input
-    const onFileChange = (files: FileList | File[]) => {
-      if (!files)
-        return;
+  // read browser file from input
+  const onFileChange = (files: FileList | File[]) => {
+    if (!files)
+      return;
 
-      let file = files[0];
-      if (!file)
-        return;
+    let file = files[0];
+    if (!file)
+      return;
 
-      setFileName(file.name);
+    setFileName(file.name);
 
-      let blob = new Blob([file], { type: file.type });
-      let blobUrl = URL.createObjectURL(blob);
-      dispatch(setFileBlobUrl(blobUrl));
-    };
-
-    onFileChange(acceptedFiles);
-  }, [acceptedFiles, dispatch]);
+    let blob = new Blob([file], { type: file.type });
+    let blobUrl = URL.createObjectURL(blob);
+    dispatch(setFileBlobUrl(blobUrl));
+  };
 
   const handleCrop = () => {
     if (!cropper)
@@ -83,9 +86,10 @@ const Editor = () => {
           <Text>
             Drag an image or click here to upload <br/>
             <small>{fileName}</small>
-
           </Text>
         </div>
+
+        <small className="text-muted">PNG/JPG, 3 MB max.</small>
       </Stack>
 
       <Stack horizontal gap={4}>
