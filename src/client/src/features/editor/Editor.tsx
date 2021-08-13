@@ -1,5 +1,5 @@
 import { Label, PrimaryButton, Spinner, Stack, Text } from '@fluentui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Cropper } from 'react-cropper';
 import { useDropzone } from 'react-dropzone';
 
@@ -19,7 +19,7 @@ const Editor = () => {
   const [fileName, setFileName] = useState<string>('');
 
   // File upload
-  const { acceptedFiles, getRootProps, getInputProps, fileRejections } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/png,image/jpeg',
     maxFiles: 1,
     // max size should be 3 MB
