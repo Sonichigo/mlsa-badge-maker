@@ -4,7 +4,7 @@ import './App.css';
 import { authRequest } from './config/authConfig';
 import { useMsal } from '@azure/msal-react';
 
-import {Stack, Text} from '@fluentui/react';
+import { MessageBar, Stack, Text } from '@fluentui/react';
 
 import { useAppDispatch } from './app/hooks';
 import { setAuthenticated, setUnauthenticated } from './features/auth/authSlice';
@@ -35,6 +35,13 @@ function App() {
         <div className="my-3 text-center">
           <Text variant="xLarge">Student Ambassadors Badge Maker</Text>
           <Text variant="large" className="badge">Early Access</Text>
+        </div>
+
+        <div className="my-3">
+          <MessageBar>
+            Heads up! This utility is in <b>Early Access</b> which means that you may face unexpected bugs.
+            If you experience any issues, please make sure to <a href="https://github.com/ginomessmer/mlsa-badge-maker/issues/new?assignees=ginomessmer&labels=bug&template=bug_report.md&title=%5BBUG%5D+" target="_blank" rel="noreferrer">report</a> them. Thank you!
+          </MessageBar>
         </div>
 
         <div className="d-flex flex-column">
