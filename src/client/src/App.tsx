@@ -34,6 +34,7 @@ function App() {
       <div className="col-md-6 col-lg-4 mx-auto">
         <div className="my-3 text-center">
           <Text variant="xLarge">Student Ambassadors Badge Maker</Text>
+          <Text variant="large" className="badge">Early Access</Text>
         </div>
 
         <div className="d-flex flex-column">
