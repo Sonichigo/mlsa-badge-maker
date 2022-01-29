@@ -11,4 +11,4 @@ Once you have generated your image, you can either download the image or let the
 It's hosted on Azure Static Web Apps and built with Blazor, Azure Functions and MS Graph: https://badge.mlsa.live/
 
 ## Contribute
-> TODO
+> ⚠️ **This project is looking for a new maintainer!** Please check out [the discussion](https://github.com/ginomessmer/mlsa-badge-maker/discussions/7) if you are interested. Thanks!
